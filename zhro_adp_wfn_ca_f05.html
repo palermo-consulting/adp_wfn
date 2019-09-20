@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>ZHRO_ADP_WFN_CA_F05</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRO_ADP_WFN_CA_F05</h2>
+<h3> Description: WFN Interface - Auxiliary Routines</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRO_ADP_WFN_CA_F05<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CONVERT_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Convert&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_DATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Original&nbsp;Date<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_RETURN&nbsp;&nbsp;&nbsp;Converted&nbsp;Date&nbsp;(m/d/yyyy)<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM convert_date  USING    fv_date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_month&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_day&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Month&nbsp;(MM)<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE&nbsp;fv_date+4(2)&nbsp;TO&nbsp;lv_month.<br />
+&nbsp;&nbsp;SHIFT&nbsp;lv_month&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;'0'.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Day&nbsp;&nbsp;&nbsp;(DD)<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE&nbsp;fv_date+6(2)&nbsp;TO&nbsp;lv_day.<br />
+&nbsp;&nbsp;SHIFT&nbsp;lv_day&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;'0'.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Year&nbsp;&nbsp;(YYYY)<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CONCATENATE&nbsp;lv_month&nbsp;'/'&nbsp;lv_day&nbsp;'/'&nbsp;fv_date(4)&nbsp;INTO&nbsp;fv_return.<br />
+<br />
+ENDFORM.                    " CONVERT_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CONVERT_TO_CSV<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Convert&nbsp;a&nbsp;WFN&nbsp;record&nbsp;to&nbsp;a&nbsp;CSV&nbsp;string<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM convert_to_csv CHANGING fv_return.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_field&gt;.<br />
+<br />
+&nbsp;&nbsp;DO.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;sy-index&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_employee_data&nbsp;TO&nbsp;&lt;lv_field&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;NE&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-index&nbsp;EQ&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_return&nbsp;=&nbsp;&lt;lv_field&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;fv_return&nbsp;','&nbsp;&lt;lv_field&gt;&nbsp;INTO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+ENDFORM.                    " CONVERT_TO_CSV<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CREATE_FILE_ON_PC<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create&nbsp;the&nbsp;file&nbsp;on&nbsp;the&nbsp;local&nbsp;computer<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_FILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Full&nbsp;file&nbsp;path<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FT_DATATAB&nbsp;&nbsp;Internal&nbsp;table&nbsp;of&nbsp;TemSe&nbsp;file<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM create_file_on_pc  USING    fv_file<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ft_datatab&nbsp;LIKE&nbsp;gt_file_out.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_filename&nbsp;TYPE&nbsp;string.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;fv_file&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;fv_file&nbsp;TO&nbsp;lv_filename.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;cl_gui_frontend_services=&gt;gui_download<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_filename<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunc_trailing_blanks&nbsp;&nbsp;&nbsp;=&nbsp;'X'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_tab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;ft_datatab<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_write_error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_batch&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gui_refuse_filetransfer&nbsp;=&nbsp;3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invalid_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;4<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_authority&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;5<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown_error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;6<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header_not_allowed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;7<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;separator_not_allowed&nbsp;&nbsp;&nbsp;=&nbsp;8<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filesize_not_allowed&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;9<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header_too_long&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;10<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp_error_create&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;11<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp_error_send&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;12<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp_error_write&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;13<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown_dp_error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;14<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_denied&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;15<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp_out_of_memory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;16<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disk_full&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;17<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp_timeout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;18<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_not_found&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;19<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataprovider_exception&nbsp;&nbsp;=&nbsp;20<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;control_flush_error&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;21<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;not_supported_by_gui&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;22<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_no_gui&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;23<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;24.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s016(rp)&nbsp;WITH&nbsp;'TemSe&nbsp;file&nbsp;created&nbsp;on&nbsp;PC.'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;e016(rp)&nbsp;WITH&nbsp;'Error&nbsp;creating&nbsp;TemSe&nbsp;file&nbsp;on&nbsp;PC.'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CREATE_FILE_ON_PC<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CREATE_FILE_ON_SRV<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create&nbsp;the&nbsp;file&nbsp;on&nbsp;the&nbsp;application&nbsp;server<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_FILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Full&nbsp;file&nbsp;path<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FT_DATATAB&nbsp;&nbsp;Internal&nbsp;table&nbsp;of&nbsp;TemSe&nbsp;file<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM create_file_on_srv  USING    fv_file<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_backup<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ft_datatab&nbsp;LIKE&nbsp;gt_file_out.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_datatab&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;p99st_raw,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;275.<br />
+<br />
+&nbsp;&nbsp;lv_file&nbsp;=&nbsp;fv_file.<br />
+<br />
+&nbsp;&nbsp;OPEN&nbsp;DATASET&nbsp;lv_file&nbsp;FOR&nbsp;OUTPUT&nbsp;IN&nbsp;TEXT&nbsp;MODE&nbsp;ENCODING&nbsp;DEFAULT.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;NE&nbsp;0..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;e016(rp)&nbsp;WITH&nbsp;'Server&nbsp;path&nbsp;could&nbsp;not&nbsp;be&nbsp;found.'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;ft_datatab&nbsp;INTO&nbsp;ls_datatab.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TRANSFER&nbsp;ls_datatab&nbsp;TO&nbsp;lv_file.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;CLOSE&nbsp;DATASET&nbsp;lv_file.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s016(rp)&nbsp;WITH&nbsp;'TemSe&nbsp;file&nbsp;created&nbsp;on&nbsp;server.'.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;e016(rp)&nbsp;WITH&nbsp;'Error&nbsp;creating&nbsp;TemSe&nbsp;file&nbsp;on&nbsp;server.'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;fv_backup&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;OPEN&nbsp;DATASET&nbsp;fv_backup&nbsp;FOR&nbsp;OUTPUT&nbsp;IN&nbsp;TEXT&nbsp;MODE&nbsp;ENCODING&nbsp;DEFAULT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;NE&nbsp;0..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;e016(rp)&nbsp;WITH&nbsp;'Server&nbsp;path&nbsp;could&nbsp;not&nbsp;be&nbsp;found.'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;ft_datatab&nbsp;INTO&nbsp;ls_datatab.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRANSFER&nbsp;ls_datatab&nbsp;TO&nbsp;fv_backup.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLOSE&nbsp;DATASET&nbsp;fv_backup.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s016(rp)&nbsp;WITH&nbsp;'TemSe&nbsp;file&nbsp;created&nbsp;on&nbsp;server.'.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;e016(rp)&nbsp;WITH&nbsp;'Error&nbsp;creating&nbsp;TemSe&nbsp;file&nbsp;on&nbsp;server.'.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CREATE_FILE_ON_SRV<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ERROR<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;error&nbsp;to&nbsp;screen<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM error USING fv_etype fv_error_number fv_err_txt1 fv_err_txt2 fv_err_txt3 fv_err_txt4.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Format&nbsp;color&nbsp;col_background&nbsp;intensified&nbsp;on.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;fv_etype&nbsp;EQ&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FORMAT&nbsp;COLOR&nbsp;COL_NEGATIVE&nbsp;&nbsp;&nbsp;INTENSIFIED&nbsp;ON.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FORMAT&nbsp;COLOR&nbsp;COL_TOTAL&nbsp;INTENSIFIED&nbsp;ON.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;WRITE:/&nbsp;text-t01.<br />
+&nbsp;&nbsp;WRITE:/&nbsp;text-t02,&nbsp;pernr-pernr.<br />
+&nbsp;&nbsp;IF&nbsp;fv_etype&nbsp;EQ&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/&nbsp;text-t03,&nbsp;fv_error_number.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/&nbsp;text-t04,&nbsp;fv_error_number.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;WRITE:/&nbsp;text-t01.<br />
+&nbsp;&nbsp;FORMAT&nbsp;INTENSIFIED&nbsp;OFF.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;fv_error_number.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E001'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e01.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E002'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;fv_err_txt1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e02,&nbsp;fv_err_txt2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E003'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e03.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E004'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e04.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E005'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e05.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E006'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e06.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E007'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e07.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E008'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e08.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E009'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e09.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E010'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e10.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E011'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e11.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E012'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e12.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E013'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-e13,&nbsp;47&nbsp;fv_err_txt1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W001'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w01.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W002'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w02.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W003'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w03.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W004'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w04.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W005'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w05.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W006'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w06.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W007'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w07.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W008'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w08.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W009'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w09.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W010'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w10.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W011'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w11.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'W012'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/2&nbsp;text-w12.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;fv_etype&nbsp;EQ&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_num_rejected_pernr&nbsp;=&nbsp;gv_num_rejected_pernr&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;dequeue_pernr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;REJECT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ERROR<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;EXPORT_SUMMARY<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;the&nbsp;export&nbsp;summary&nbsp;to&nbsp;the&nbsp;screen<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM export_summary.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_file_name&nbsp;TYPE&nbsp;string.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;p_pc&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_file_name&nbsp;=&nbsp;p_pfile.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_file_name&nbsp;=&nbsp;p_sfile.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_file_out&nbsp;INTO&nbsp;gs_line_out.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE:/1&nbsp;gs_line_out.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;FORMAT&nbsp;COLOR&nbsp;COL_TOTAL&nbsp;INTENSIFIED.<br />
+<br />
+&nbsp;&nbsp;SKIP&nbsp;1.<br />
+&nbsp;&nbsp;FORMAT&nbsp;COLOR&nbsp;COL_BACKGROUND&nbsp;INTENSIFIED&nbsp;OFF.<br />
+&nbsp;&nbsp;WRITE:/1&nbsp;text-s01,&nbsp;45&nbsp;gv_num_selected_pernr.<br />
+&nbsp;&nbsp;WRITE:/1&nbsp;text-s02,&nbsp;45&nbsp;gv_num_rejected_pernr.<br />
+&nbsp;&nbsp;WRITE:/1&nbsp;text-s03,&nbsp;45&nbsp;gv_num_exported_pernr.<br />
+&nbsp;&nbsp;SKIP&nbsp;1.<br />
+&nbsp;&nbsp;WRITE:/1&nbsp;text-s04,&nbsp;45&nbsp;lv_file_name.<br />
+&nbsp;&nbsp;SKIP&nbsp;1.<br />
+&nbsp;&nbsp;WRITE:/1&nbsp;text-s05,&nbsp;45&nbsp;gv_number_of_records.<br />
+&nbsp;&nbsp;SKIP&nbsp;1.<br />
+<br />
+ENDFORM.                    "EXPORT_SUMMARY<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ENQUEUE_PERNR<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lock&nbsp;the&nbsp;employee&nbsp;from&nbsp;master&nbsp;data&nbsp;changes.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM enqueue_pernr .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_return&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;bapireturn1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_locking_user&nbsp;LIKE&nbsp;sy-uname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_message&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;bapi_msg.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'HR_EMPLOYEE_ENQUEUE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;pernr-pernr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;ls_return<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locking_user&nbsp;=&nbsp;lv_locking_user.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;ls_return&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;ls_return-message&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;ls_return-message&nbsp;TO&nbsp;lv_message.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;ID&nbsp;ls_return-id&nbsp;TYPE&nbsp;ls_return-type&nbsp;NUMBER&nbsp;ls_return-number<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WITH&nbsp;&nbsp;ls_return-message_v1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_return-message_v2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_return-message_v3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_return-message_v4<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;lv_message.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E002'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_message<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_locking_user<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " ENQUEUE_PERNR<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;DEQUEUE_PERNR<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unlock&nbsp;the&nbsp;employee&nbsp;to&nbsp;allow&nbsp;master&nbsp;data&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM dequeue_pernr .<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'HR_EMPLOYEE_DEQUEUE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number&nbsp;=&nbsp;pernr-pernr.<br />
+<br />
+<br />
+ENDFORM.                    " DEQUEUE_PERNR<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>

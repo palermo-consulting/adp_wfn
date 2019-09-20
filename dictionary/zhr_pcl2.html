@@ -1,0 +1,1785 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>Dictionary object- ZHR_PCL2</title>
+<style type="text/css">
+  th{text-align:left}
+  .cell{
+     font-family:"Courier New", Courier, monospace;
+     color:#000;
+     font-size:12px;
+     background-color:#F2F4F7;
+  }
+  .cell td { border: thin solid #ccc; }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+  <table class="outerTable">
+    <tr>
+      <td><h2>Table: ZHR_PCL2</h2>
+  <h3>Description: HR Cluster 2</h3></td>
+    </tr>
+    <tr>
+      <td><!--This is where our main table begins  -->
+<table class="innerTable">
+<tr>
+  <th>Row</th>
+  <th>Field name</th>
+  <th>Position</th>
+  <th>Key</th>
+  <th>Data element</th>
+  <th>Domain</th>
+  <th>Datatype</th>
+  <th>Length</th>
+  <th>Lowercase</th>
+  <th>Domain text</th>
+</tr>
+<tr class="cell">
+  <td> 1</td>
+  <td>CLIENT</td>
+  <td>1</td>
+  <td>X</td>
+  <td>MANDT</td>
+  <td>MANDT</td>
+  <td>CLNT</td>
+  <td>3</td>
+  <td>&nbsp;</td>
+  <td>Client</td>
+</tr>
+<tr class="cell">
+  <td> 2</td>
+  <td>RELID</td>
+  <td>2</td>
+  <td>X</td>
+  <td>RELID_PCL2</td>
+  <td>RELID_PCL2</td>
+  <td>CHAR</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>Area identification on import/export database PCL2</td>
+</tr>
+<tr class="cell">
+  <td> 3</td>
+  <td>SRTFD</td>
+  <td>3</td>
+  <td>X</td>
+  <td>PCLKEY</td>
+  <td>CHAR40</td>
+  <td>CHAR</td>
+  <td>40</td>
+  <td>&nbsp;</td>
+  <td>PCLx key</td>
+</tr>
+<tr class="cell">
+  <td> 4</td>
+  <td>SRTF2</td>
+  <td>4</td>
+  <td>X</td>
+  <td>PCLSRTFD</td>
+  <td>SYBIN4</td>
+  <td>INT4</td>
+  <td>10</td>
+  <td>&nbsp;</td>
+  <td>Sort field for PCLx (dup.key)</td>
+</tr>
+<tr class="cell">
+  <td> 5</td>
+  <td>HISTO</td>
+  <td>5</td>
+  <td>&nbsp;</td>
+  <td>HISTO</td>
+  <td>CHAR1</td>
+  <td>CHAR</td>
+  <td>1</td>
+  <td>&nbsp;</td>
+  <td>Historical Record Flag</td>
+</tr>
+<tr class="cell">
+  <td> 6</td>
+  <td>AEDTM</td>
+  <td>6</td>
+  <td>&nbsp;</td>
+  <td>AEDAT</td>
+  <td>DATUM</td>
+  <td>DATS</td>
+  <td>8</td>
+  <td>&nbsp;</td>
+  <td>Changed On</td>
+</tr>
+<tr class="cell">
+  <td> 7</td>
+  <td>UNAME</td>
+  <td>7</td>
+  <td>&nbsp;</td>
+  <td>UNAME</td>
+  <td>UNAME</td>
+  <td>CHAR</td>
+  <td>12</td>
+  <td>&nbsp;</td>
+  <td>User Name</td>
+</tr>
+<tr class="cell">
+  <td> 8</td>
+  <td>PGMID</td>
+  <td>8</td>
+  <td>&nbsp;</td>
+  <td>OLD_PROG</td>
+  <td>OLD_PROG</td>
+  <td>CHAR</td>
+  <td>8</td>
+  <td>&nbsp;</td>
+  <td>ABAP: Program Name</td>
+</tr>
+<tr class="cell">
+  <td> 9</td>
+  <td>VERSN</td>
+  <td>9</td>
+  <td>&nbsp;</td>
+  <td>PVRSN</td>
+  <td>CHAR2</td>
+  <td>CHAR</td>
+  <td>2</td>
+  <td>&nbsp;</td>
+  <td>Version in cluster files</td>
+</tr>
+<tr class="cell">
+  <td>10</td>
+  <td>CLUSTR</td>
+  <td>10</td>
+  <td>&nbsp;</td>
+  <td>PCLCLUSTR</td>
+  <td>SYBIN2</td>
+  <td>INT2</td>
+  <td>5</td>
+  <td>&nbsp;</td>
+  <td>Cluster for PCLx</td>
+</tr>
+<tr class="cell">
+  <td>11</td>
+  <td>CLUSTD</td>
+  <td>11</td>
+  <td>&nbsp;</td>
+  <td>PCLDATA</td>
+  <td>PCLDATA</td>
+  <td>LRAW</td>
+  <td>3900</td>
+  <td>&nbsp;</td>
+  <td>VARC(3916) for PTXT</td>
+</tr>
+      </table>
+     </td>
+   </tr>
+<br/>
+  <table class="outerTable">
+    <tr>
+      <td><h2>Fixed Domain Values </h2>
+    </tr>
+    <tr>
+      <td><!--This is where our main table begins  -->
+<table class="innerTable">
+<tr>
+  <th>Domain Name</th>
+  <th>Value Low</th>
+  <th>Value High</th>
+  <th>Text</th>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>A2</td>
+  <td>&nbsp;</td>
+  <td>Payroll results Argentina: Annual consolidation</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Saudi Arabia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AB</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Albania)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Andorra)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (garnishment)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AF</td>
+  <td>&nbsp;</td>
+  <td>Garnishment directory</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Antigua)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Afghanistan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Armenia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Netherlands Antilles)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Angola)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Argentina)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Aruba)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>AZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Azerbaijan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>B2</td>
+  <td>&nbsp;</td>
+  <td>PDC data (month)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bosnia and Herzegovina)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BB</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Barbados)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bangladesh)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BF</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Burkina Faso)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bulgaria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bahrain)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Burundi)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BJ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Benin)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bermuda)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Brunei)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bolivia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Brazil)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BS</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bahamas)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Bhutan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BV</td>
+  <td>&nbsp;</td>
+  <td>Pension fund (Switzerland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Botswana)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Belarus)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>BZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Belize)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CA</td>
+  <td>&nbsp;</td>
+  <td>Cluster directory (CU enhancement for archiving)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CD</td>
+  <td>&nbsp;</td>
+  <td>Cluster directory (to 3.1I)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CF</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Central African Republic)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Democratic Republic of the Congo)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Ivory Coast)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Cook Islands)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CL</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Chile)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Cameroon)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (China)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Colombia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Costa Rica)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CU</td>
+  <td>&nbsp;</td>
+  <td>Cluster directory</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CV</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Cape Verde)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CW</td>
+  <td>&nbsp;</td>
+  <td>Cluster directory for SI quarterly totals (Belgium)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CX</td>
+  <td>&nbsp;</td>
+  <td>Cluster directory for SI declaration (Belgium)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>CY</td>
+  <td>&nbsp;</td>
+  <td>Cluster directory - BELCOTAX results (Belgium)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DB</td>
+  <td>&nbsp;</td>
+  <td>BAV-/Pension certificate (DE)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DG</td>
+  <td>&nbsp;</td>
+  <td>DUEVO messages - part-time employees (DE)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DJ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Djibouti)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DK</td>
+  <td>&nbsp;</td>
+  <td>DUEVO messages (DE)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Dominica)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Dominican Republic)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DP</td>
+  <td>&nbsp;</td>
+  <td>Garnishments (DE)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DQ</td>
+  <td>&nbsp;</td>
+  <td>Garnishment directory</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DU</td>
+  <td>&nbsp;</td>
+  <td>DUEVO notifications, O record</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Algeria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>DZ</td>
+  <td>&nbsp;</td>
+  <td>DUEVO file number (Germany)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>EC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Ecuador)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>EE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Estonia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>EF</td>
+  <td>&nbsp;</td>
+  <td>Requests for refund (Austria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>EG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Egypt)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>EI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Ethiopia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>EM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (United Arab Emirates)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ER</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Eritrea)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ES</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (totals)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ET</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (totals)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>FI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Finland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>FJ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Fiji)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>FM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Federated States of Micronesia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>FO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Faroe Islands)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Gabon)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Grenada)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Georgia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GF</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (French Guiana)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Ghana)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GJ</td>
+  <td>&nbsp;</td>
+  <td>Cluster GJ (Santei/Geppen evaluation results)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GL</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Greenland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Gambia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Guinea)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GP</td>
+  <td>&nbsp;</td>
+  <td>Payroll reconciliations (GB)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GQ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Equatorial Guinea)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Greece)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Guatemala)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Guam)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Guinea-Bissau)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>GY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Guyana)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>HK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (HongKong)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>HN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Honduras)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>HR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Croatia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>HT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Haiti)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>HZ</td>
+  <td>&nbsp;</td>
+  <td>Additional cluster for Hong Kong</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Iceland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ID</td>
+  <td>&nbsp;</td>
+  <td>Interface toolbox - Directory for interface results</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Ireland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IF</td>
+  <td>&nbsp;</td>
+  <td>Payroll interface</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IK</td>
+  <td>&nbsp;</td>
+  <td>KIDICAP interface</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IL</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Israel)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IN</td>
+  <td>&nbsp;</td>
+  <td>Payroll Results India</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IQ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Iraq)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Iran)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>IS</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Indonesia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>JA</td>
+  <td>&nbsp;</td>
+  <td>Annual tax declaration (Austria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>JM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Jamaica)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>JO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Jordan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Kenya)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Kyrgyzstan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Cambodia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Kiribati)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Comoros)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Democratic Republic of the Congo)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KP</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (North Korea)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KR</td>
+  <td>&nbsp;</td>
+  <td>Payroll Result: Korea</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Saint Kitts and Nevis)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Cuba)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Kuwait)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>KZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Kazakhstan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Saint Lucia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Lebanon)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Liechtenstein)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Sri Lanka)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Laos)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Liberia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LS</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Lesotho)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Lithuania)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Luxembourg)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LV</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Latvia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Libya)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>LZ</td>
+  <td>&nbsp;</td>
+  <td>Payslip (Austria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Morocco)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Monaco)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Moldova)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Madagascar)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Marshall Islands)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Macedonia, FYR of)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ML</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Mali)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Myanmar)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Mongolia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MP</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Northern Mariana Islands)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Mauritania)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Malta)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Mauritius)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MV</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Maldives)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Malawi)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MX</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Mexico)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>MZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Mozambique)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>N1</td>
+  <td>&nbsp;</td>
+  <td>Advance payments (New Zealand)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Namibia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (New Caledonia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Niger)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Nigeria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NP</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Nepal)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Nauru)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>NZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (New Zealand)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>OD</td>
+  <td>&nbsp;</td>
+  <td>Civil service - staggered payment (directory)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>OM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Oman)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Panama)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Peru)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PF</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (French Polynesia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Papua New Guinea)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PH</td>
+  <td>&nbsp;</td>
+  <td>Payroll Results Philippines</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Pakistan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PL</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Poland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Puerto Rico)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PS</td>
+  <td>&nbsp;</td>
+  <td>Schema</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PT</td>
+  <td>&nbsp;</td>
+  <td>Schema</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Paraguay)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>PW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Palau)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>Q0</td>
+  <td>&nbsp;</td>
+  <td>Statements (international)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>Q1</td>
+  <td>&nbsp;</td>
+  <td>Statements (batch comments - international)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>Q3</td>
+  <td>&nbsp;</td>
+  <td>Advance payments (Australia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>QA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Qatar)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Austria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RB</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Belgium)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Switzerland), all data</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Germany), all data</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Spain)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RF</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (France), all data</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Britain)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Hungary)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Italy)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RJ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Japan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Canada)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RL</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Malaysia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Denmark)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Netherlands)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Romania)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RP</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Portugal)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RQ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Australia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Singapore)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RS</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Sweden)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Czech Republic)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (USA)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RV</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Norway)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (South Africa)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>RX</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (international), all data</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Seychelles)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Sudan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SI</td>
+  <td>&nbsp;</td>
+  <td>Payroll results Slovenia</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SJ</td>
+  <td>&nbsp;</td>
+  <td>Social insurance - evaluation results (Japan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SK</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Slovakia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SL</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Sierra Leone)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (San Marino)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Senegal)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Somalia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SP</td>
+  <td>&nbsp;</td>
+  <td>Statutory sickpay (Great Britain)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Suriname)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SV</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (El Salvador)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Syria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>SZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Swaziland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Chad)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Togo)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TH</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Thailand)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TJ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Tajikistan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Tunisia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Taiwan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TO</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Tonga)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TP</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (East Timor)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Turkey)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Trinidad and Tobago)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Turkmenistan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TV</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Tuvalu)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TW</td>
+  <td>&nbsp;</td>
+  <td>Tax data South Africa</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>TZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Tanzania)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>UA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Ukraine)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>UG</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Uganda)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>UN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (United Nations)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>UR</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Russia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>UY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Uruguay)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>UZ</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Uzbekistan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>VA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Vatican City)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>VC</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Saint Vincent)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>VE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Venezuela)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>VN</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Vietnam)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>VU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Vanuatu)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>WA</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Rwanda)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>WS</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Samoa)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>WW</td>
+  <td>&nbsp;</td>
+  <td>SI quarterly totals cluster - Belgian net pay</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>WX</td>
+  <td>&nbsp;</td>
+  <td>SI declaration cluster - Belgian net pay</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>WY</td>
+  <td>&nbsp;</td>
+  <td>BELCOTAX cluster results - Belgian net pay</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>XA</td>
+  <td>&nbsp;</td>
+  <td>Special run (Austria)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>XD</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Germany), all data</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>XE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Spain)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>XM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Denmark)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>XY</td>
+  <td>&nbsp;</td>
+  <td>Special payments (Ireland)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>YE</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Yemen)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>YJ</td>
+  <td>&nbsp;</td>
+  <td>Cluster YJ (year-end adjustment) (Japan)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>YS</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Solomon Islands)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>YT</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Sao Tome)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>YU</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Serbia and Montenegro)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZA</td>
+  <td>&nbsp;</td>
+  <td>VBL/SPF average</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZD</td>
+  <td>&nbsp;</td>
+  <td>VBL/SPF tax/average</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZL</td>
+  <td>&nbsp;</td>
+  <td>Time wage types/work schedule</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZM</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Zambia)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZS</td>
+  <td>&nbsp;</td>
+  <td>VBL/SPF onetime payment</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZV</td>
+  <td>&nbsp;</td>
+  <td>SPF data</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZW</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Zimbabwe)</td>
+</tr>
+<tr class="cell">
+  <td>RELID_PCL2</td>
+  <td>ZY</td>
+  <td>&nbsp;</td>
+  <td>Payroll results (Cyprus)</td>
+</tr>
+      </table>
+     </td>
+   </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>

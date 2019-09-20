@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>ZHRO_ADP_WFN_CA</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRO_ADP_WFN_CA</h2>
+<h3> Description: ADP WFN Canada Outbound Interface</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;&nbsp;ZHRO_ADP_WFN_CA<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+REPORT zhro_adp_wfn_ca.<br />
+<br />
+include <a href ="zhro_adp_wfn_ca_d01.html">zhro_adp_wfn_ca_d01</a>.<br />
+INCLUDE zhro_adp_wfn_ca_d02.  "Data structures for file handling<br />
+include <a href ="zhro_adp_wfn_ca_s01.html">zhro_adp_wfn_ca_s01</a>.<br />
+include <a href ="zhro_adp_wfn_ca_f01.html">zhro_adp_wfn_ca_f01</a>.  "Interface Logic<br />
+include <a href ="zhro_adp_wfn_ca_f02.html">zhro_adp_wfn_ca_f02</a>.  "Field Logic<br />
+include <a href ="zhro_adp_wfn_ca_f03.html">zhro_adp_wfn_ca_f03</a>.  "Effective Dates and Change Blocks<br />
+include <a href ="zhro_adp_wfn_ca_f04.html">zhro_adp_wfn_ca_f04</a>.  "Field Mapping<br />
+include <a href ="zhro_adp_wfn_ca_f05.html">zhro_adp_wfn_ca_f05</a>.  "Auxiliary Routines<br />
+<br />
+INITIALIZATION.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;begin.<br />
+<br />
+GET pernr.<br />
+&nbsp;&nbsp;ADD&nbsp;1&nbsp;TO&nbsp;gv_num_selected_pernr.<br />
+&nbsp;&nbsp;PERFORM&nbsp;enqueue_pernr.<br />
+&nbsp;&nbsp;PERFORM&nbsp;data_collection.<br />
+&nbsp;&nbsp;PERFORM&nbsp;validate_employee.<br />
+&nbsp;&nbsp;PERFORM&nbsp;export_new_data.<br />
+&nbsp;&nbsp;PERFORM&nbsp;change_validation.<br />
+&nbsp;&nbsp;PERFORM&nbsp;action_based_validation.<br />
+&nbsp;&nbsp;PERFORM&nbsp;fill_wfn_records.<br />
+&nbsp;&nbsp;PERFORM&nbsp;dequeue_pernr.<br />
+<br />
+END-OF-SELECTION.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;write_to_file.<br />
+&nbsp;&nbsp;PERFORM&nbsp;export_summary.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*Text&nbsp;elements<br />
+*----------------------------------------------------------<br />
+*&nbsp;001&nbsp;Period<br />
+*&nbsp;003&nbsp;File&nbsp;Options<br />
+*&nbsp;004&nbsp;Save&nbsp;to&nbsp;PC<br />
+*&nbsp;005&nbsp;Save&nbsp;to&nbsp;Server<br />
+*&nbsp;011&nbsp;Archive&nbsp;Folder<br />
+*&nbsp;012&nbsp;Current&nbsp;period&nbsp;(all&nbsp;pay&nbsp;areas)<br />
+*&nbsp;013&nbsp;Other&nbsp;period&nbsp;(by&nbsp;payroll&nbsp;area)<br />
+*&nbsp;014&nbsp;Payroll&nbsp;area<br />
+*&nbsp;015&nbsp;Period<br />
+*&nbsp;E01&nbsp;Employee&nbsp;does&nbsp;not&nbsp;have&nbsp;Tax&nbsp;ID:&nbsp;000000000<br />
+*&nbsp;E02&nbsp;Locking&nbsp;user:<br />
+*&nbsp;E03&nbsp;Employee&nbsp;missing&nbsp;WFN&nbsp;position&nbsp;ID&nbsp;(Infotype&nbsp;185)<br />
+*&nbsp;E04&nbsp;Employee&nbsp;missing&nbsp;WFN&nbsp;file&nbsp;number<br />
+*&nbsp;E05&nbsp;Employee&nbsp;missing&nbsp;supervisor&nbsp;ID&nbsp;(Infotype&nbsp;1)<br />
+*&nbsp;E06&nbsp;Supervisor&nbsp;missing&nbsp;WFN&nbsp;position&nbsp;ID<br />
+*&nbsp;E07&nbsp;Employee&nbsp;missing&nbsp;standard&nbsp;hours&nbsp;(Infotype&nbsp;7/8)<br />
+*&nbsp;E08&nbsp;Employee&nbsp;missing&nbsp;rate&nbsp;amount&nbsp;(Infotype&nbsp;8)<br />
+*&nbsp;E09&nbsp;Pay&nbsp;change&nbsp;action&nbsp;without&nbsp;actual&nbsp;pay&nbsp;change<br />
+*&nbsp;E10&nbsp;Termination&nbsp;missing&nbsp;last&nbsp;day&nbsp;paid&nbsp;(date&nbsp;type&nbsp;08)<br />
+*&nbsp;E11&nbsp;Termination&nbsp;missing&nbsp;last&nbsp;day&nbsp;worked&nbsp;(date&nbsp;type&nbsp;07)<br />
+*&nbsp;E12&nbsp;Full&nbsp;rate&nbsp;(0)&nbsp;cannot&nbsp;be&nbsp;assigned&nbsp;to&nbsp;employee&nbsp;in&nbsp;CA10/CA70.<br />
+*&nbsp;E13&nbsp;Action&nbsp;type&nbsp;is&nbsp;invalid&nbsp;for&nbsp;Canadian&nbsp;employee:<br />
+*&nbsp;S01&nbsp;No.&nbsp;of&nbsp;personnel&nbsp;numbers&nbsp;selected<br />
+*&nbsp;S02&nbsp;Number&nbsp;of&nbsp;rejected&nbsp;personnel&nbsp;nos<br />
+*&nbsp;S03&nbsp;Number&nbsp;of&nbsp;personnel&nbsp;nos&nbsp;in&nbsp;export&nbsp;file<br />
+*&nbsp;S04&nbsp;Export&nbsp;file<br />
+*&nbsp;S05&nbsp;Number&nbsp;of&nbsp;exported&nbsp;records<br />
+*&nbsp;T01&nbsp;*-------------------------------------------------------------------------*<br />
+*&nbsp;T02&nbsp;Personnel&nbsp;No.:<br />
+*&nbsp;T03&nbsp;Error&nbsp;:<br />
+*&nbsp;T04&nbsp;Warning&nbsp;:<br />
+*&nbsp;W01&nbsp;Employee&nbsp;missing&nbsp;adjusted&nbsp;service&nbsp;date<br />
+*&nbsp;W02&nbsp;Employee&nbsp;missing&nbsp;marital&nbsp;status<br />
+*&nbsp;W03&nbsp;Employee&nbsp;missing&nbsp;language<br />
+*&nbsp;W04&nbsp;Employee&nbsp;missing&nbsp;gender<br />
+*&nbsp;W05&nbsp;New&nbsp;hire/rehire&nbsp;missing&nbsp;permanent&nbsp;address<br />
+*&nbsp;W06&nbsp;Employee&nbsp;missing&nbsp;work&nbsp;email<br />
+*&nbsp;W07&nbsp;New&nbsp;hire/rehire&nbsp;missing&nbsp;bank&nbsp;details<br />
+*&nbsp;W08&nbsp;Tax&nbsp;assignment&nbsp;missing&nbsp;(Infotype&nbsp;0461)<br />
+*&nbsp;W09&nbsp;Provincial&nbsp;tax&nbsp;data&nbsp;missing&nbsp;(Infotype&nbsp;0462)<br />
+*&nbsp;W10&nbsp;Federal&nbsp;tax&nbsp;data&nbsp;missing&nbsp;(Infotype&nbsp;0463)<br />
+*&nbsp;W11&nbsp;Addition&nbsp;tax&nbsp;data&nbsp;missing&nbsp;(Infotype&nbsp;0464)<br />
+*&nbsp;W12&nbsp;No&nbsp;time-off&nbsp;policy&nbsp;exists<br />
+<br />
+<br />
+*Selection&nbsp;texts<br />
+*----------------------------------------------------------<br />
+*&nbsp;P_CP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current&nbsp;period&nbsp;(all&nbsp;pay&nbsp;areas)<br />
+*&nbsp;P_OP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other&nbsp;period&nbsp;(by&nbsp;pay&nbsp;area)<br />
+<br />
+<br />
+*Messages<br />
+*----------------------------------------------------------<br />
+*<br />
+*&nbsp;Message&nbsp;class:&nbsp;RP<br />
+*016&nbsp;&nbsp;&nbsp;&&nbsp;&&nbsp;&&nbsp;&<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>

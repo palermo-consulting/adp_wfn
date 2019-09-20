@@ -1,0 +1,2852 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>ZHRO_ADP_WFN_CA_F02</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRO_ADP_WFN_CA_F02</h2>
+<h3> Description: WFN Interface - Field Logic</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRO_ADP_WFN_CA_F02<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;POSITION_ID<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Position&nbsp;ID<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM position_id USING fv_return.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_icnum&gt;.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'ICNUM'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0185&gt;&nbsp;TO&nbsp;&lt;lv_icnum&gt;.<br />
+<br />
+&nbsp;&nbsp;fv_return&nbsp;=&nbsp;&lt;lv_icnum&gt;.<br />
+<br />
+ENDFORM.                    "POSITION_ID<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_CHANGE_EFFECTIV<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change&nbsp;Effective&nbsp;On&nbsp;-&nbsp;There&nbsp;must&nbsp;always&nbsp;be&nbsp;a&nbsp;Change&nbsp;Effection<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;On&nbsp;date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _change_effective USING fv_return.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_effective_date&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+ENDFORM.                    "_CHANGE_EFFECTIVE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_IS_PAID_BY_WFN<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Is&nbsp;Paid&nbsp;By&nbsp;WFN<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required&nbsp;when&nbsp;adding&nbsp;a&nbsp;new&nbsp;associate&nbsp;and/or&nbsp;position&nbsp;record.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;'Y',&nbsp;the&nbsp;position&nbsp;is&nbsp;to&nbsp;be&nbsp;created&nbsp;as&nbsp;a&nbsp;paid&nbsp;position.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;'N',&nbsp;the&nbsp;position&nbsp;is&nbsp;to&nbsp;be&nbsp;created&nbsp;as&nbsp;a&nbsp;non-paid&nbsp;position.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Field&nbsp;must&nbsp;be&nbsp;blank&nbsp;when&nbsp;updating&nbsp;an&nbsp;existing&nbsp;associate&nbsp;and/or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;record.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not&nbsp;allowed.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _is_paid_by_wfn USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"Only&nbsp;export&nbsp;value&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;New&nbsp;Hire&nbsp;or&nbsp;Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'.&nbsp;"OR&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.&nbsp;&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_employee_data-position_id&nbsp;NE&nbsp;gs_old_employee_data-position_id.&nbsp;"OR&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;position&nbsp;change.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_IS_PAID_BY_WFN<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_POS_USES_TIME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Position&nbsp;Uses&nbsp;Time<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required&nbsp;when&nbsp;adding&nbsp;a&nbsp;new&nbsp;associate&nbsp;and/or&nbsp;position&nbsp;record.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cannot&nbsp;be&nbsp;'Y'&nbsp;when&nbsp;a&nbsp;new&nbsp;position&nbsp;record&nbsp;is&nbsp;being&nbsp;inserted&nbsp;with&nbsp;an<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee&nbsp;Status&nbsp;equal&nbsp;to&nbsp;'T',&nbsp;'R',&nbsp;'D'&nbsp;or&nbsp;'L'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;is&nbsp;optional.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not&nbsp;allowed.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _pos_uses_time USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;DATA:&nbsp;lv_employee_status.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"Only&nbsp;export&nbsp;value&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;New&nbsp;Hire&nbsp;or&nbsp;Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'&nbsp;OR&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.&nbsp;&nbsp;"New&nbsp;Hire/Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_employee_data-position_id&nbsp;NE&nbsp;gs_old_employee_data-position_id.&nbsp;"OR&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;position&nbsp;change.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_employee_status&nbsp;USING&nbsp;gs_new_p0000-massn&nbsp;gs_new_p0000-massg&nbsp;CHANGING&nbsp;lv_employee_status.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;lv_employee_status.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'T'&nbsp;OR&nbsp;'R'&nbsp;OR&nbsp;'D'&nbsp;OR&nbsp;'L'.&nbsp;&nbsp;"Cannot&nbsp;be&nbsp;'Y'&nbsp;when&nbsp;Employee&nbsp;Status&nbsp;equal&nbsp;to&nbsp;'T',&nbsp;'R',&nbsp;'D'&nbsp;or&nbsp;'L'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    "_POS_USES_TIME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CO_CODE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Co&nbsp;Code<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;when&nbsp;the&nbsp;value&nbsp;is&nbsp;changed&nbsp;or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;hire&nbsp;action&nbsp;or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;rehire&nbsp;action&nbsp;or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;transfer<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM co_code USING fv_return.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_bukrs&gt;.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BUKRS'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_bukrs&gt;.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;&lt;lv_bukrs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T55Z'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T55X'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T55Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T56A'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'CA10'&nbsp;OR&nbsp;'CA20'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T56B'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    "CO_CODE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_FILE_NUMBER<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;Number<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required&nbsp;when&nbsp;Is&nbsp;Paid&nbsp;By&nbsp;WFN&nbsp;is&nbsp;'Y',&nbsp;Position&nbsp;ID&nbsp;is&nbsp;not&nbsp;provided<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;Auto&nbsp;Assign&nbsp;Next&nbsp;File&nbsp;Number&nbsp;is&nbsp;'off'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;is&nbsp;not&nbsp;permitted&nbsp;when&nbsp;Is&nbsp;Paid&nbsp;By&nbsp;WFN&nbsp;is&nbsp;'N'.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _file_number USING fv_return.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_pnalt&gt;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_pernr&gt;.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PNALT'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0032&gt;&nbsp;TO&nbsp;&lt;lv_pnalt&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PERNR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_pernr&gt;.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;&lt;lv_pnalt&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_pnalt&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_pernr&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_FILE_NUMBER<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_HIRE_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hire&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _hire_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'.&nbsp;"Hire&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_HIRE_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SENIORITY_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seniority&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM seniority_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_3&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_date_01&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SENIORITY_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CREDITED_SERVICE_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Credited&nbsp;Service&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM credited_service_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_3&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_date_06&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "CREDITED_SERVICE_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADJUSTED_SERVICE_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adjusted&nbsp;Service&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM adjusted_service_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_3&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_date_06&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADJUSTED_SERVICE_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;&nbsp;EMPLOYEE_STATUS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee&nbsp;Status<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM employee_status USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_4&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_massn&gt;,&nbsp;&lt;lv_massg&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0000&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'MASSN'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0000&gt;&nbsp;TO&nbsp;&lt;lv_massn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'MASSG'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0000&gt;&nbsp;TO&nbsp;&lt;lv_massg&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;get_employee_status&nbsp;USING&nbsp;&lt;lv_massn&gt;&nbsp;&lt;lv_massg&gt;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+<br />
+ENDFORM.                    " EMPLOYEE_STATUS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_TERMINATION_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Termination&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _termination_date USING fv_return.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_date&nbsp;TYPE&nbsp;d.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7H'&nbsp;OR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7R'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7F'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_date&nbsp;=&nbsp;gs_new_p0000-begda&nbsp;-&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;lv_date&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_TERMINATION_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_TERM_REASON<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Termination&nbsp;Reason<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _term_reason USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7F'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'C'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'05'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'06'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'07'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'08'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'K'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'09'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'V'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'10'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'P'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'11'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'U'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'12'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'T'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'13'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'U'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'14'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'U'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'15'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'P'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'16'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'17'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'18'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'19'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'M'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'20'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'21'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'T'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'22'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'V'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'23'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'B'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'24'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'B'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7H'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'01'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E05'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'02'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'G07'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'G07'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7R'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'01'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'K00'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'02'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'K00'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'K00'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_TERM_REASON<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_REHIRE_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rehire&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _rehire_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_REHIRE_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_REHIRE_REASON<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rehire&nbsp;Reason<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _rehire_reason USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'NEW'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_REHIRE_REASON<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_LOA_START_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leave&nbsp;of&nbsp;Absence&nbsp;Start&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _loa_start_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7I'&nbsp;OR&nbsp;"UnPaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7K'&nbsp;OR&nbsp;"Hire&nbsp;Unpaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7L'&nbsp;OR&nbsp;"Hire&nbsp;Paid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7M'.&nbsp;&nbsp;&nbsp;"Paid&nbsp;LOA&nbsp;–&nbsp;Active&nbsp;Status<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_LOA_START_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_LOA_EXP_RET_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leave&nbsp;of&nbsp;Absence&nbsp;Expected&nbsp;Return&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _loa_exp_ret_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7I'&nbsp;OR&nbsp;"UnPaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7K'&nbsp;OR&nbsp;"Hire&nbsp;Unpaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7L'&nbsp;OR&nbsp;"Hire&nbsp;Paid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7M'.&nbsp;&nbsp;&nbsp;"Paid&nbsp;LOA&nbsp;–&nbsp;Active&nbsp;Status<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0019-termn&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0019-termn&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_LOA_EXP_RET_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_LOA_RETURN_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leave&nbsp;of&nbsp;Absence&nbsp;Return&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _loa_return_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7J'&nbsp;OR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7N'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_LOA_RETURN_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_LOA_REASON<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Leave&nbsp;of&nbsp;Absence&nbsp;Reason<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _loa_reason USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7I'.&nbsp;"UnPaid&nbsp;LOA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'03'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N00'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'05'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'FAM'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'06'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'FAM'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'07'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'08'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'EDU'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'09'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'MIL'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'10'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'11'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A00'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7K'.&nbsp;"Hire&nbsp;Unpaid&nbsp;LOA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'05'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'FAM'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'06'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'FAM'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'07'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'08'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'EDU'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'09'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'MIL'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'10'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7M'.&nbsp;"Paid&nbsp;LOA.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'DIS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PER'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_LOA_REASON<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_POS_START_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Position&nbsp;Start&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _pos_start_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'&nbsp;OR&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.&nbsp;&nbsp;"Hire&nbsp;or&nbsp;Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_POS_START_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_REPORTS_TO_ID<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reports&nbsp;To&nbsp;Position&nbsp;ID<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_reports_to_id USING fv_return.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_pernr&nbsp;TYPE&nbsp;pernr_d,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_begda&nbsp;TYPE&nbsp;begda,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_endda&nbsp;TYPE&nbsp;endda.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lt_0185&nbsp;TYPE&nbsp;STANDARD&nbsp;TABLE&nbsp;OF&nbsp;p0185,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_0185&nbsp;TYPE&nbsp;p0185.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_yysupervisor_id&gt;,&nbsp;&lt;lv_begda&gt;,&nbsp;&lt;lv_endda&gt;.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'YYSUPERVISOR_ID'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_yysupervisor_id&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BEGDA'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_begda&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'ENDDA'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_endda&gt;.<br />
+<br />
+&nbsp;&nbsp;lv_pernr&nbsp;=&nbsp;&lt;lv_yysupervisor_id&gt;.<br />
+&nbsp;&nbsp;lv_begda&nbsp;=&nbsp;&lt;lv_begda&gt;.<br />
+&nbsp;&nbsp;lv_endda&nbsp;=&nbsp;&lt;lv_endda&gt;.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;Get&nbsp;the&nbsp;WFN&nbsp;ID&nbsp;of&nbsp;the&nbsp;Supervisor<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'HR_READ_INFOTYPE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pernr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_pernr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'0185'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_begda<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_endda<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TABLES<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infty_tab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lt_0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infty_not_found&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SORT&nbsp;lt_0185&nbsp;DESCENDING&nbsp;BY&nbsp;endda.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;lt_0185&nbsp;INTO&nbsp;ls_0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;ictyp&nbsp;EQ&nbsp;'Z3'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0&nbsp;AND&nbsp;ls_0185-icnum&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;ls_0185-icnum&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "GET_REPORTS_TO_ID<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;REPORTS_TO_ID<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reports&nbsp;To&nbsp;Position&nbsp;ID<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM reports_to_id USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;get_reports_to_id&nbsp;USING&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "REPORTS_TO_ID<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;HOME_COST_NUMBER<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home&nbsp;Cost&nbsp;Number<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;when&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM home_cost_number USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;DATA:&nbsp;lv_kostl&nbsp;LIKE&nbsp;p0001-kostl.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_5&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_bukrs&gt;,&nbsp;&lt;lv_kostl&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BUKRS'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_bukrs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'KOSTL'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_kostl&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_bukrs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP01'&nbsp;OR&nbsp;'SP02'&nbsp;OR&nbsp;'SP03'&nbsp;OR&nbsp;&nbsp;'SP04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_kostl&gt;&nbsp;TO&nbsp;lv_kostl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;lv_kostl&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;'0'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_kostl(6)&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'CA10'&nbsp;OR&nbsp;'CA20'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_kostl&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "HOME_COST_NUMBER<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;HOME_DEPARTMENT<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Home&nbsp;Department<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM home_department USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;DATA:&nbsp;lv_kostl&nbsp;LIKE&nbsp;p0001-kostl.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_6&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_bukrs&gt;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_kostl&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BUKRS'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_bukrs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'KOSTL'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_kostl&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_bukrs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP01'&nbsp;OR&nbsp;'SP02'&nbsp;OR&nbsp;'SP03'&nbsp;OR&nbsp;&nbsp;'SP04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_kostl&gt;&nbsp;TO&nbsp;lv_kostl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;lv_kostl&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;'0'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_kostl(6)&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'CA10'&nbsp;OR&nbsp;'CA20'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_kostl&gt;(6)&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "HOME_DEPARTMENT<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;LOCATION_CODE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location&nbsp;Code<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM location_code USING fv_return.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_30&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_yywork_location&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'YYWORK_LOCATION'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_yywork_location&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_yywork_location&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "LOCATION_CODE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PAY_GROUP<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pay&nbsp;Group<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM pay_group USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_7&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA:&nbsp;lv_rate_type&nbsp;LIKE&nbsp;gs_employee_data-rate_type.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_bukrs&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0001&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BUKRS'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_bukrs&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;rate_type_mapping&nbsp;USING&nbsp;gv_abart&nbsp;CHANGING&nbsp;lv_rate_type.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;pay_group_mapping&nbsp;USING&nbsp;&lt;lv_bukrs&gt;&nbsp;lv_rate_type&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PAY_GROUP<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;LAST_NAME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last&nbsp;Name<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;if&nbsp;the&nbsp;value&nbsp;has&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM last_name USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_8&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_nachn&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'NACHN'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_nachn&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_nachn&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "LAST_NAME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;FIRST_NAME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First&nbsp;Name<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;if&nbsp;the&nbsp;value&nbsp;has&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM first_name USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_8&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_vorna&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'VORNA'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_vorna&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_vorna&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "FIRST_NAME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ACTUAL_MAR_STA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actual&nbsp;Marital&nbsp;Status<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM actual_mar_sta USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_9&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_famst&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0002&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'FAMST'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_famst&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_famst&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'0'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'S'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'M'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ACTUAL_MAR_STA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;TAX_ID_NUMBER<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tax&nbsp;ID&nbsp;number<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;on&nbsp;when&nbsp;the&nbsp;value&nbsp;has&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM tax_id_number USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_10&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_perid&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PERID'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_perid&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fv_return&nbsp;=&nbsp;&lt;lv_perid&gt;.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "TAX_ID_NUMBER<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;TAX_ID_EXPY_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tax&nbsp;ID&nbsp;Expiry&nbsp;Date<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;when&nbsp;the&nbsp;value&nbsp;has&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM tax_id_expy_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_10&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_perid&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PERID'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_perid&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_perid&gt;(1)&nbsp;EQ&nbsp;'9'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_date_11&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "TAX_ID_EXPY_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;BIRTH_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Birth&nbsp;Date<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;if&nbsp;the&nbsp;value&nbsp;has&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM birth_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_11&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_gbdat&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'GBDAT'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_gbdat&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_gbdat&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;&lt;lv_gbdat&gt;&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "BIRTH_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CORRESP_LANG<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Correspondence&nbsp;Language<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;when&nbsp;the&nbsp;value&nbsp;has&nbsp;changed&nbsp;or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;hire&nbsp;or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;a&nbsp;rehire<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM corresp_lang USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_12&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_sprsl&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0002&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'SPRSL'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_sprsl&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_sprsl&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'E'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'F'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "CORRESP_LANG<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GENDER<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gender<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM gender USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_13&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_gesch&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0002&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'GESCH'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0002&gt;&nbsp;TO&nbsp;&lt;lv_gesch&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_gesch&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'M'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'2'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "GENDER<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_ADDR1_USE_AS_LEG<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;1&nbsp;Use&nbsp;as&nbsp;Legal<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;for&nbsp;a&nbsp;new&nbsp;hire<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _addr1_use_as_leg USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_ADDR1_USE_AS_LEG<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADDRESS_LINE_1<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;Line&nbsp;1<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;the&nbsp;entire&nbsp;address&nbsp;block&nbsp;when&nbsp;one&nbsp;item&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM address_line_1 USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_stras&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'STRAS'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0006&gt;&nbsp;TO&nbsp;&lt;lv_stras&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_stras&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADDRESS_LINE_1<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADDRESS_LINE_2<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;Line&nbsp;2<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;the&nbsp;entire&nbsp;address&nbsp;block&nbsp;when&nbsp;one&nbsp;item&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM address_line_2 USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_locat&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'LOCAT'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0006&gt;&nbsp;TO&nbsp;&lt;lv_locat&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_locat&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADDRESS_LINE_2<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADDRESS_1_PROV<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;1&nbsp;Province<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;the&nbsp;entire&nbsp;address&nbsp;block&nbsp;when&nbsp;one&nbsp;item&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM address_1_prov USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_state&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'STATE'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0006&gt;&nbsp;TO&nbsp;&lt;lv_state&gt;&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_state&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADDRESS_1_PROV<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADDRESS_1_CITY<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;1&nbsp;City<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;the&nbsp;entire&nbsp;address&nbsp;block&nbsp;when&nbsp;one&nbsp;item&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM address_1_city USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_ort01&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'ORT01'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0006&gt;&nbsp;TO&nbsp;&lt;lv_ort01&gt;&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_ort01&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADDRESS_1_CITY<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADDRESS_1_PSTLCD<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;1&nbsp;Postal&nbsp;Code<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;the&nbsp;entire&nbsp;address&nbsp;block&nbsp;when&nbsp;one&nbsp;item&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM address_1_pstlcd USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_pstlz&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PSTLZ'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0006&gt;&nbsp;TO&nbsp;&lt;lv_pstlz&gt;&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_pstlz&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADDRESS_1_PSTLCD<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ADDRESS_1_CNTRY<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address&nbsp;1&nbsp;Country<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;the&nbsp;entire&nbsp;address&nbsp;block&nbsp;when&nbsp;one&nbsp;item&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM address_1_cntry USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_14&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_land1&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'LAND1'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0006&gt;&nbsp;TO&nbsp;&lt;lv_land1&gt;&nbsp;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_land1&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "ADDRESS_1_CNTRY<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;WORK_EMAIL<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM work_email USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_28&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_usrid_long&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'USRID_LONG'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0105&gt;&nbsp;TO&nbsp;&lt;lv_usrid_long&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_usrid_long&gt;&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "WORK_EMAIL<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_RECEIVE_SCHD_PAY<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Receive&nbsp;Scheduled&nbsp;Payment<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required&nbsp;when&nbsp;adding&nbsp;a&nbsp;new&nbsp;position&nbsp;with&nbsp;an&nbsp;Employee&nbsp;Status&nbsp;set<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;'R',&nbsp;'T',&nbsp;'D'&nbsp;or&nbsp;'L'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not&nbsp;allowed&nbsp;when&nbsp;adding&nbsp;a&nbsp;new&nbsp;position&nbsp;with&nbsp;an&nbsp;Employee&nbsp;Status<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set&nbsp;to&nbsp;'A'.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required&nbsp;when&nbsp;changing&nbsp;an&nbsp;Employee&nbsp;Status&nbsp;(already&nbsp;sent&nbsp;to<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PayTech)&nbsp;from&nbsp;'A'&nbsp;to&nbsp;'R',&nbsp;'T',&nbsp;'D'&nbsp;or&nbsp;'L'.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Required&nbsp;when&nbsp;changing&nbsp;an&nbsp;Employee&nbsp;Status&nbsp;(already&nbsp;sent&nbsp;to<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PayTech)&nbsp;from&nbsp;'R',&nbsp;'T',&nbsp;'D'&nbsp;or&nbsp;'L',&nbsp;to&nbsp;'A'.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Optional&nbsp;when&nbsp;the&nbsp;WFN&nbsp;Employee&nbsp;Status&nbsp;has&nbsp;previously&nbsp;been<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;changed&nbsp;during&nbsp;the&nbsp;same&nbsp;current&nbsp;open&nbsp;pay&nbsp;cycle&nbsp;(pay&nbsp;cycle&nbsp;is&nbsp;open<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;in&nbsp;'Entering&nbsp;Payroll&nbsp;Information'&nbsp;or&nbsp;'Preview&nbsp;Submitted'<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode)&nbsp;and&nbsp;that&nbsp;status&nbsp;change&nbsp;will&nbsp;revise&nbsp;PayTech's&nbsp;current&nbsp;status<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;'A'&nbsp;to&nbsp;'R',&nbsp;'T',&nbsp;'D'&nbsp;or&nbsp;'L'&nbsp;or&nbsp;from&nbsp;'R',&nbsp;'T',&nbsp;'D'&nbsp;or&nbsp;'L',&nbsp;to&nbsp;'A'&nbsp;(once<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payroll&nbsp;is&nbsp;submitted).<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add/Change<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not&nbsp;allowed&nbsp;when&nbsp;the&nbsp;pay&nbsp;cycle&nbsp;is&nbsp;not&nbsp;open&nbsp;(i.e.&nbsp;not&nbsp;in&nbsp;'Entering<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payroll&nbsp;Information'&nbsp;and&nbsp;not&nbsp;in&nbsp;'Preview&nbsp;Submitted'&nbsp;modes).<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not&nbsp;allowed&nbsp;when&nbsp;the&nbsp;Change&nbsp;Effective&nbsp;On&nbsp;date&nbsp;is&nbsp;greater&nbsp;than&nbsp;the<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current&nbsp;open&nbsp;pay&nbsp;cycle's&nbsp;Pay&nbsp;Period&nbsp;End&nbsp;Date&nbsp;(pay&nbsp;cycle&nbsp;is&nbsp;open<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;in&nbsp;'Entering&nbsp;Payroll&nbsp;Information'&nbsp;or&nbsp;'Preview&nbsp;Submitted'<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode).<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~&nbsp;(tilde)&nbsp;is&nbsp;interpreted&nbsp;as&nbsp;'N'&nbsp;or&nbsp;'No'.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _receive_schd_pay USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7F'&nbsp;OR&nbsp;'7H'&nbsp;OR&nbsp;'7R'.&nbsp;"Termination/Retired/Deceased<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7L'&nbsp;OR&nbsp;'7M'.&nbsp;"Paid&nbsp;Leave<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7I'&nbsp;OR&nbsp;'7K'.&nbsp;"Unpaid&nbsp;Leave<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7J'&nbsp;OR&nbsp;'7N'.&nbsp;"Return&nbsp;from&nbsp;leave<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_RECEIVE_SCHD_PAY<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;STANDARD_HOURS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Standard&nbsp;hours<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;only&nbsp;when&nbsp;changed<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM standard_hours USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_15&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_divgv&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA:&nbsp;lv_divgv&nbsp;TYPE&nbsp;p0008-divgv.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'DIVGV'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0008&gt;&nbsp;TO&nbsp;&lt;lv_divgv&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_divgv&gt;&nbsp;TO&nbsp;lv_divgv.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_zeinh&nbsp;EQ&nbsp;'03'.&nbsp;"Weekly<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_divgv&nbsp;=&nbsp;lv_divgv&nbsp;*&nbsp;2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ELSE.&nbsp;&nbsp;"Bi-Weekly<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_divgv&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;fv_return&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;space.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "STANDARD_HOURS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;RATE_TYPE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate&nbsp;Type<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;when&nbsp;changed,&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;transfer&nbsp;action,&nbsp;and&nbsp;when<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;there&nbsp;is&nbsp;a&nbsp;pay&nbsp;rate&nbsp;amount&nbsp;change.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM rate_type USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_15&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;rate_type_mapping&nbsp;USING&nbsp;gv_abart&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "RATE_TYPE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;RATE_AMOUNT<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate&nbsp;Amount<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Supply&nbsp;when&nbsp;changed,&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;pay&nbsp;change&nbsp;action,&nbsp;or<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;trasnfer&nbsp;action<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM rate_amount USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_15&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_bet01&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA:&nbsp;lv_bet01&nbsp;TYPE&nbsp;p0008-bet01.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BET01'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0008&gt;&nbsp;TO&nbsp;&lt;lv_bet01&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bet01&gt;&nbsp;TO&nbsp;lv_bet01.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_zeinh&nbsp;EQ&nbsp;'03'.&nbsp;"Weekly<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_bet01&nbsp;=&nbsp;lv_bet01&nbsp;*&nbsp;2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ELSE.&nbsp;&nbsp;"Bi-Weekly<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_bet01&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;fv_return&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;space.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "RATE_AMOUNT<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_COMP_CHNGE_REASN<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compensation&nbsp;Change&nbsp;Reason<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _comp_chnge_reasn USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7C'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'OTH'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PRO'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'05'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'ADJ'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7D'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'MER'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'REC'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'MER'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PERF'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'11'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'INIT'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'12'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'OTH'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;fv_return&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_comp_change_date&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'CHANGE'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_COMP_CHNGE_REASN<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_SAME_TAX_FORM<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Same&nbsp;Tax&nbsp;Form<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _same_tax_form USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE&nbsp;gv_same_tax_form&nbsp;TO&nbsp;fv_return.<br />
+<br />
+ENDFORM.                    "_SAME_TAX_FORM<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_TRANSFER_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transfer&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _transfer_date USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gv_transfer_date&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_transfer_date&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_TRANSFER_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PAYMENT_METHOD<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment&nbsp;Method<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM payment_method USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_16&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-payment_method&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PAYMENT_METHOD<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PRIMARY_BANK<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary&nbsp;Bank<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM primary_bank USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_16&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-primary_bank&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PRIMARY_BANK<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PRIMARY_BRANCH<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary&nbsp;Branch<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM primary_branch USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_16&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-primary_branch&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PRIMARY_BRANCH<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PRIMARY_ACCNT_NO<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary&nbsp;Account&nbsp;Number<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM primary_accnt_no USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_16&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-primary_accnt_no&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PRIMARY_ACCNT_NO<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SECONDARY_BANK<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secondary&nbsp;Bank<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM secondary_bank USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_17&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-secondary_bank&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SECONDARY_BANK<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SECONDARY_BRANCH<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secondary&nbsp;Branch<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM secondary_branch USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_17&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-secondary_branch&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SECONDARY_BRANCH<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SECOND_ACCNT_NO<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secondary&nbsp;Account&nbsp;Number<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM second_accnt_no USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_17&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-second_accnt_no&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SECOND_ACCNT_NO<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SECOND_DEP_AMNT<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secondary&nbsp;Deposit&nbsp;Amount<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM second_dep_amnt USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_17&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_bank-second_dep_amnt&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SECOND_DEP_AMNT<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PROV_OF_EMPLYMNT<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Province&nbsp;of&nbsp;Employment<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM prov_of_emplymnt USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_18&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_wrkar&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'WRKAR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0461&gt;&nbsp;TO&nbsp;&lt;lv_wrkar&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_wrkar&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'NF'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'NL'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'NN'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'NU'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_wrkar&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PROV_OF_EMPLYMNT<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CRA_PA_RQ_ID<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CRA&nbsp;PA&nbsp;/&nbsp;RQ&nbsp;ID<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM cra_pa_rq_id USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_19&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_aus01&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS01'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus01&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_aus01&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'0'.&nbsp;"Full&nbsp;Rate<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'2'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'1'.&nbsp;"Reduced&nbsp;Rate<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "CRA_PA_RQ_ID<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;FEDTAX_CRDT_TYPE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fed&nbsp;Tax&nbsp;Credit&nbsp;Type<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM fedtax_crdt_type USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_20&nbsp;EQ&nbsp;'X'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_tnind&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0463&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TNIND'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0463&gt;&nbsp;TO&nbsp;&lt;lv_tnind&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_tnind&gt;&nbsp;EQ&nbsp;0.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'S'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;&lt;lv_tnind&gt;&nbsp;EQ&nbsp;1.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'O'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'S'&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "FEDTAX_CRDT_TYPE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;FEDTAX_CRDT_OAMT<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fed&nbsp;Tax&nbsp;Credit&nbsp;Other&nbsp;Amount<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM fedtax_crdt_oamt USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_20&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_tnind&gt;,&nbsp;&lt;lv_totcr&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TNIND'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0463&gt;&nbsp;TO&nbsp;&lt;lv_tnind&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_tnind&gt;&nbsp;EQ&nbsp;1.&nbsp;&nbsp;"Other&nbsp;amount<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TOTCR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0463&gt;&nbsp;TO&nbsp;&lt;lv_totcr&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_totcr&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;fv_return&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "FEDTAX_CRDT_OAMT<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PRVTAX_CRDT_TYPE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prov&nbsp;Tax&nbsp;Credit&nbsp;Type<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM prvtax_crdt_type USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_21&nbsp;EQ&nbsp;'X'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_tninp&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_p0462&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TNINP'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0462&gt;&nbsp;TO&nbsp;&lt;lv_tninp&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_tninp&gt;&nbsp;EQ&nbsp;0.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'S'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;&lt;lv_tninp&gt;&nbsp;EQ&nbsp;1.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'O'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'S'&nbsp;TO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PRVTAX_CRDT_TYPE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PRVTAX_CRDT_OAMT<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Prov&nbsp;Tax&nbsp;Credit&nbsp;Other&nbsp;Amount<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM prvtax_crdt_oamt USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_21&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_tninp&gt;,&nbsp;&lt;lv_wrkar&gt;,&nbsp;&lt;lv_totcq&gt;,&nbsp;&lt;lv_totcp&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TNINP'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0462&gt;&nbsp;TO&nbsp;&lt;lv_tninp&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_tninp&gt;&nbsp;EQ&nbsp;1.&nbsp;"Other&nbsp;amount<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'WRKAR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0462&gt;&nbsp;TO&nbsp;&lt;lv_wrkar&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_wrkar&gt;&nbsp;EQ&nbsp;'QC'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TOTCQ'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0462&gt;&nbsp;TO&nbsp;&lt;lv_totcq&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_totcq&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TOTCP'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0462&gt;&nbsp;TO&nbsp;&lt;lv_totcp&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_totcp&gt;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;fv_return&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PRVTAX_CRDT_OAMT<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;DONT_CALC_FEDTAX<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Do&nbsp;Not&nbsp;Calc&nbsp;Federal&nbsp;Tax<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM dont_calc_fedtax USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_22&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_exemptions-fed&nbsp;EQ&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "DONT_CALC_FEDTAX<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;DONT_CALC_C_QPP<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Do&nbsp;Not&nbsp;Calc&nbsp;C/QPP<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM dont_calc_c_qpp USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_23&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_exemptions-cpp&nbsp;EQ&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "DONT_CALC_C_QPP<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;DO_NOT_CALC_EI<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Do&nbsp;Not&nbsp;Calc&nbsp;EI<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM do_not_calc_ei USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_24&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_exemptions-ei&nbsp;EQ&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "DO_NOT_CALC_EI<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_REASON_FOR_ISSUE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reason&nbsp;for&nbsp;Issue<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _reason_for_issue USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;&nbsp;&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_employee_data-loa_reason&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_employee_data-loa_reason&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;gs_employee_data-term_reason&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_employee_data-term_reason&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_REASON_FOR_ISSUE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_COMMENTS_ON_ROE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comments&nbsp;on&nbsp;ROE<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _comments_on_roe USING fv_return.<br />
+ENDFORM.                    "_COMMENTS_ON_ROE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;EMPLOYEE_OCCUP<br />
+*&---------------------------------------------------------------------*<br />
+*<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM employee_occup USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_25&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "EMPLOYEE_OCCUP<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_FIRST_DAY_WORKED<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First&nbsp;Day&nbsp;Worked<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _first_day_worked USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;&nbsp;&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;"Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Re-hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_FIRST_DAY_WORKED<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;LAST_DAY_PAID<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last&nbsp;Day&nbsp;Paid<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM last_day_paid USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_26&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_date_08&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_date_08&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "LAST_DAY_PAID<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_EXPECTED_RECALL<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expected&nbsp;Recall<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _expected_recall USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;&nbsp;&nbsp;"New&nbsp;action<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7I'&nbsp;OR&nbsp;'7K'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Leave&nbsp;of&nbsp;Absence<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7F'&nbsp;OR&nbsp;'7H'&nbsp;OR&nbsp;'7R'.&nbsp;&nbsp;"Termination<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'U'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_EXPECTED_RECALL<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_EXPD_RECALL_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expected&nbsp;Recall&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _expd_recall_date USING fv_return.<br />
+ENDFORM.                    "_EXPD_RECALL_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_READY_TO_ISSUE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ready&nbsp;to&nbsp;Issue<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _ready_to_issue USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_new_p0000-begda&nbsp;NE&nbsp;gs_old_p0000-begda.&nbsp;&nbsp;"New&nbsp;action&nbsp;record<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7G'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7I'&nbsp;OR&nbsp;'7K'&nbsp;OR&nbsp;'7M'&nbsp;OR&nbsp;&nbsp;"Leave&nbsp;of&nbsp;Absence<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7F'&nbsp;OR&nbsp;'7H'&nbsp;OR&nbsp;'7R'.&nbsp;&nbsp;&nbsp;&nbsp;"Termination<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_READY_TO_ISSUE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_BADGE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Badge&nbsp;number<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _badge USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;'0'&nbsp;gs_employee_data-file_number&nbsp;INTO&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_BADGE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PAYCLASS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pay&nbsp;class<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM payclass USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_aus03&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS03'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus03&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;austx&nbsp;FROM&nbsp;t543d<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;fv_return<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;sprsl&nbsp;EQ&nbsp;sy-langu<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;molga&nbsp;EQ&nbsp;'07'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;subty&nbsp;EQ&nbsp;'9011'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;stagb&nbsp;EQ&nbsp;'03'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;staus&nbsp;EQ&nbsp;&lt;lv_aus03&gt;.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "PAYCLASS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_BEGDA_TRACK_TIME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Start&nbsp;Date&nbsp;for&nbsp;Tracking&nbsp;Time<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _begda_track_time USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+*&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_new_p0000-begda&nbsp;NE&nbsp;gs_old_p0000-begda&nbsp;AND&nbsp;"New&nbsp;action&nbsp;record<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'&nbsp;OR&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'&nbsp;).&nbsp;&nbsp;"New&nbsp;Hire/Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-begda&nbsp;GE&nbsp;gv_frbeg&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-begda&nbsp;LE&nbsp;gv_frend.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gs_new_p0000-begda&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_frbeg&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.                    "_BEGDA_TRACK_TIME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_ENDDA_TRACK_TIME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stop&nbsp;Date&nbsp;for&nbsp;Tracking&nbsp;Time<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _endda_track_time USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_date_07&nbsp;IS&nbsp;NOT&nbsp;INITIAL.&nbsp;&nbsp;&nbsp;"Last&nbsp;day&nbsp;worked<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;gv_date_07&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_ENDDA_TRACK_TIME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SUPERVISORFLAG<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUPERVISORFLAG<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM supervisorflag USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_yymanager_flag&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'YYMANAGER_FLAG'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_yymanager_flag&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_yymanager_flag&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'Y'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'N'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SUPERVISORFLAG<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SUPERVISORID<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reports&nbsp;To&nbsp;Position&nbsp;ID<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM supervisorid USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;get_reports_to_id&nbsp;USING&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "SUPERVISORID<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;TIMEZONE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time&nbsp;Zone<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM timezone USING fv_return.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DATA:&nbsp;lv_province&nbsp;TYPE&nbsp;t005s-bland,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_timezone&nbsp;TYPE&nbsp;ttzdata-tzone.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_wrkar&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'WRKAR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0462&gt;&nbsp;TO&nbsp;&lt;lv_wrkar&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_wrkar&gt;&nbsp;TO&nbsp;lv_province.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'TZ_LOCATION_TIMEZONE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'CA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;region&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_province<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timezone&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_timezone<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_timezone_found&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;lv_timezone&nbsp;EQ&nbsp;'AST'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Atlantic'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_timezone&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "TIMEZONE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_XFERTOPAYROLL<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRANSFERTOPAYROLL<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _xfertopayroll USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CHECK&nbsp;gv_time_iteration&nbsp;LT&nbsp;2.<br />
+<br />
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_27&nbsp;EQ&nbsp;'X'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_abart&nbsp;EQ&nbsp;'1'.&nbsp;"Hourly<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ELSE.&nbsp;"Salaried<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-begda&nbsp;NE&nbsp;gs_old_p0000-begda.&nbsp;&nbsp;"New&nbsp;action&nbsp;record<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "_XFERTOPAYROLL<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_TO_POLICY_NAME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time&nbsp;Off&nbsp;Policy&nbsp;Name<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _to_policy_name USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+*&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_29&nbsp;EQ&nbsp;'X'.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;DATA:&nbsp;lv_stagb&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;2.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_aus&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gv_time_iteration.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;1.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS04'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_stagb&nbsp;=&nbsp;'04'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;2.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS05'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_stagb&nbsp;=&nbsp;'05'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;3.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS06'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_stagb&nbsp;=&nbsp;'06'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+*<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;austx&nbsp;FROM&nbsp;t543d<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;fv_return<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;sprsl&nbsp;EQ&nbsp;sy-langu<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;molga&nbsp;EQ&nbsp;'07'<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;subty&nbsp;EQ&nbsp;'9011'<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;stagb&nbsp;EQ&nbsp;lv_stagb<br />
+**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;staus&nbsp;EQ&nbsp;&lt;lv_aus&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_aus&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SI1A'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;PLAN&nbsp;1-A'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SI2B'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;PLAN&nbsp;2-B'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIA'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;PLAN&nbsp;A'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIB'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;PLAN&nbsp;B'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIP1'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PERSONAL&nbsp;DAY&nbsp;8'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIP2'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PERSONAL&nbsp;DAY&nbsp;10'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIP3'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PERSONAL&nbsp;DAY&nbsp;11'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIP4'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'PERSONAL&nbsp;DAY&nbsp;9'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIS1'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'SICK&nbsp;8&nbsp;HOURS'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIS2'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'SICK&nbsp;10&nbsp;HOURS'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIS3'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'SICK&nbsp;11&nbsp;HOURS'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIS4'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'SICK&nbsp;9&nbsp;HOURS'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIU'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;CURRENT&nbsp;PLAN&nbsp;U&nbsp;8'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SIU1'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;CURRENT&nbsp;PLAN&nbsp;U&nbsp;10'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SRFS'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'VACATION&nbsp;PLAN&nbsp;A'&nbsp;TO&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+*<br />
+*&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.                    "_TO_POLICY_NAME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;TO_POLICY_NAME<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time&nbsp;Off&nbsp;Policy&nbsp;Name<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;subroutine&nbsp;is&nbsp;just&nbsp;to&nbsp;compare&nbsp;old/new&nbsp;for&nbsp;a&nbsp;change.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Therefore&nbsp;AUS04,&nbsp;AUS05,&nbsp;AUS06&nbsp;are&nbsp;simply&nbsp;concatenated&nbsp;for&nbsp;old<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;new,&nbsp;and&nbsp;then&nbsp;compared&nbsp;for&nbsp;a&nbsp;change.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM to_policy_name USING fv_return.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_aus04&gt;,&nbsp;&lt;lv_aus05&gt;,&nbsp;&lt;lv_aus06&gt;.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS04'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus04&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS05'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus05&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'AUS06'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_aus06&gt;.<br />
+<br />
+&nbsp;&nbsp;CONCATENATE&nbsp;&lt;lv_aus04&gt;&nbsp;&lt;lv_aus05&gt;&nbsp;&lt;lv_aus06&gt;&nbsp;INTO&nbsp;fv_return.&nbsp;"Concatenate&nbsp;to&nbsp;compare&nbsp;old/new<br />
+<br />
+ENDFORM.                    "TO_POLICY_NAME<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;_TO_PLCYASS_BEGDA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time&nbsp;Off&nbsp;Policy&nbsp;Assignment&nbsp;Start&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM _to_plcyass_begda USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+*&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_29&nbsp;EQ&nbsp;'X'.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_begda&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BEGDA'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0033&gt;&nbsp;TO&nbsp;&lt;lv_begda&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_begda&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_date&nbsp;USING&nbsp;&lt;lv_begda&gt;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+*<br />
+*&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.                    "_TO_PLCYASS_BEGDA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;UNION_CODE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Union&nbsp;Code<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM union_code USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_31&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_trfar&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TRFAR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0008&gt;&nbsp;TO&nbsp;&lt;lv_trfar&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;union_code_mapping&nbsp;USING&nbsp;&lt;lv_trfar&gt;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "UNION_CODE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;WORKER_CATEGORY<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Worker&nbsp;Category<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM worker_category USING fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Export&nbsp;when&nbsp;there&nbsp;is&nbsp;a&nbsp;change<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_change_blocks-cb_32&nbsp;EQ&nbsp;'X'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_persg&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PERSG'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_persg&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;worker_category_mapping&nbsp;USING&nbsp;&lt;lv_persg&gt;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    "WORKER_CATEGORY<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>

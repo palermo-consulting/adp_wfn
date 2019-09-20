@@ -1,0 +1,2681 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>ZHRO_ADP_WFN_CA_F01</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRO_ADP_WFN_CA_F01</h2>
+<h3> Description: WFN Interface - Interface Logic</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRO_ADP_WFN_CA_F01<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;EXPORT_NEW_DATA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Export&nbsp;new&nbsp;data<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM export_new_data .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_seqnr&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;9.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;export_directory&nbsp;CHANGING&nbsp;lv_seqnr.<br />
+&nbsp;&nbsp;PERFORM&nbsp;export_data&nbsp;USING&nbsp;lv_seqnr.<br />
+<br />
+ENDFORM.                    " EXPORT_NEW_DATA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;EXPORT_DIRECTORY<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Export&nbsp;directory<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM export_directory CHANGING fv_seqnr.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_id_key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_id_key,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_version,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_results&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_results,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_if_results&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;tt_if_results.<br />
+<br />
+&nbsp;&nbsp;MOVE:&nbsp;&nbsp;pernr-pernr&nbsp;TO&nbsp;ls_id_key-pernr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gc_if_name&nbsp;&nbsp;TO&nbsp;ls_id_key-fldid.<br />
+<br />
+&nbsp;&nbsp;IMPORT&nbsp;if_version&nbsp;&nbsp;TO&nbsp;ls_if_version<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if_results&nbsp;&nbsp;TO&nbsp;lt_if_results<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;DATABASE&nbsp;zhr_pcl2(id)&nbsp;ID&nbsp;ls_id_key.<br />
+<br />
+&nbsp;&nbsp;ls_if_version-cdate&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;ls_if_version-ctime&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;ls_if_version-cprog&nbsp;=&nbsp;sy-repid.<br />
+&nbsp;&nbsp;ls_if_version-uname&nbsp;=&nbsp;sy-uname.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;lt_if_results&nbsp;BY&nbsp;seqnr&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;lt_if_results&nbsp;INTO&nbsp;ls_if_results&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;ls_if_results-seqnr&nbsp;=&nbsp;fv_seqnr&nbsp;=&nbsp;ls_if_results-seqnr&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;ls_if_results-frper&nbsp;=&nbsp;gv_frper.<br />
+&nbsp;&nbsp;ls_if_results-frbeg&nbsp;=&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;ls_if_results-frend&nbsp;=&nbsp;gv_frend.<br />
+&nbsp;&nbsp;ls_if_results-rundt&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;ls_if_results-runtm&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;ls_if_results-abkrs&nbsp;=&nbsp;pernr-abkrs.<br />
+&nbsp;&nbsp;SORT&nbsp;lt_if_results&nbsp;BY&nbsp;seqnr&nbsp;ASCENDING.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_if_results&nbsp;TO&nbsp;lt_if_results.<br />
+<br />
+&nbsp;&nbsp;zhr_pcl2-aedtm&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;zhr_pcl2-uname&nbsp;=&nbsp;sy-uname.<br />
+&nbsp;&nbsp;zhr_pcl2-pgmid&nbsp;=&nbsp;sy-repid.<br />
+&nbsp;&nbsp;zhr_pcl2-versn&nbsp;=&nbsp;gc_if_version.<br />
+&nbsp;&nbsp;EXPORT&nbsp;if_version&nbsp;FROM&nbsp;ls_if_version<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if_results&nbsp;FROM&nbsp;lt_if_results<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;DATABASE&nbsp;zhr_pcl2(id)&nbsp;ID&nbsp;ls_id_key.<br />
+<br />
+ENDFORM.                    " EXPORT_DIRECTORY<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_NEW_DATA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;new&nbsp;data<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_new_data .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_new_p0000&nbsp;TYPE&nbsp;ts_p0000,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0001&nbsp;TYPE&nbsp;ts_p0001,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0002&nbsp;TYPE&nbsp;ts_p0002,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0006&nbsp;TYPE&nbsp;ts_p0006,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0008&nbsp;TYPE&nbsp;ts_p0008,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0009&nbsp;TYPE&nbsp;ts_p0009,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0014&nbsp;TYPE&nbsp;ts_p0014,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0019&nbsp;TYPE&nbsp;ts_p0019,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0032&nbsp;TYPE&nbsp;ts_p0032,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0033&nbsp;TYPE&nbsp;ts_p0033,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0041&nbsp;TYPE&nbsp;ts_p0041,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0105&nbsp;TYPE&nbsp;ts_p0105,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0167&nbsp;TYPE&nbsp;ts_p0167,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0168&nbsp;TYPE&nbsp;ts_p0168,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0169&nbsp;TYPE&nbsp;ts_p0169,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0185&nbsp;TYPE&nbsp;ts_p0185,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0461&nbsp;TYPE&nbsp;ts_p0461,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0462&nbsp;TYPE&nbsp;ts_p0462,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0463&nbsp;TYPE&nbsp;ts_p0463,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_new_p0464&nbsp;TYPE&nbsp;ts_p0464.<br />
+<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0000<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0000&nbsp;TO&nbsp;ls_new_p0000.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0000&nbsp;TO&nbsp;gt_new_p0000.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0001<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0001&nbsp;TO&nbsp;ls_new_p0001.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0001&nbsp;TO&nbsp;gt_new_p0001.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0002<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0002&nbsp;TO&nbsp;ls_new_p0002.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0002&nbsp;TO&nbsp;gt_new_p0002.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0006<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;anssa&nbsp;EQ&nbsp;gc_permanent_address..<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0006&nbsp;TO&nbsp;ls_new_p0006.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0006&nbsp;TO&nbsp;gt_new_p0006.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0008<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0008&nbsp;TO&nbsp;ls_new_p0008.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0008&nbsp;TO&nbsp;gt_new_p0008.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0009<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0009&nbsp;TO&nbsp;ls_new_p0009.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0009&nbsp;TO&nbsp;gt_new_p0009.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0014<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0014&nbsp;TO&nbsp;ls_new_p0014.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0014&nbsp;TO&nbsp;gt_new_p0014.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0019<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;tmart&nbsp;EQ&nbsp;gc_end_of_leave.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0019&nbsp;TO&nbsp;ls_new_p0019.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0019&nbsp;TO&nbsp;gt_new_p0019.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0032<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0032&nbsp;TO&nbsp;ls_new_p0032.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0032&nbsp;TO&nbsp;gt_new_p0032.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0033<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;subty&nbsp;EQ&nbsp;gc_wfn_stats.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0033&nbsp;TO&nbsp;ls_new_p0033.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0033&nbsp;TO&nbsp;gt_new_p0033.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0041<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0041&nbsp;TO&nbsp;ls_new_p0041.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0041&nbsp;TO&nbsp;gt_new_p0041.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0105<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;usrty&nbsp;EQ&nbsp;gc_email_address.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0105&nbsp;TO&nbsp;ls_new_p0105.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0105&nbsp;TO&nbsp;gt_new_p0105.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0167<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0167&nbsp;TO&nbsp;ls_new_p0167.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0167&nbsp;TO&nbsp;gt_new_p0167.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0168<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0168&nbsp;TO&nbsp;ls_new_p0168.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0168&nbsp;TO&nbsp;gt_new_p0168.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0169<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0169&nbsp;TO&nbsp;ls_new_p0169.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0169&nbsp;TO&nbsp;gt_new_p0169.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;ictyp&nbsp;EQ&nbsp;gc_wfn_payroll_id.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0185&nbsp;TO&nbsp;ls_new_p0185.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0185&nbsp;TO&nbsp;gt_new_p0185.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0461<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0461&nbsp;TO&nbsp;ls_new_p0461.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0461&nbsp;TO&nbsp;gt_new_p0461.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0462<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0462&nbsp;TO&nbsp;ls_new_p0462.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0462&nbsp;TO&nbsp;gt_new_p0462.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0463<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0463&nbsp;TO&nbsp;ls_new_p0463.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0463&nbsp;TO&nbsp;gt_new_p0463.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;p0464<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;begda&nbsp;LE&nbsp;gv_frend<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;endda&nbsp;GE&nbsp;gv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;p0464&nbsp;TO&nbsp;ls_new_p0464.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;ls_new_p0464&nbsp;TO&nbsp;gt_new_p0464.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.                    " GET_NEW_DATA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;INIT_GLOBALS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Initialize&nbsp;global&nbsp;variables<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM init_globals .<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gt_old_p0000[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0001[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0002[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0006[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0008[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0009[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0014[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0019[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0032[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0033[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0041[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0105[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0167[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0168[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0169[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0185[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0461[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0462[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0463[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_old_p0464[].<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gt_new_p0000[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0001[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0002[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0006[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0008[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0009[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0014[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0019[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0032[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0033[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0041[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0105[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0167[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0168[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0169[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0185[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0461[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0462[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0463[],<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_new_p0464[].<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gs_old_p0000,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0001,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0002,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0006,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0008,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0009,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0014,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0019,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0032,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0033,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0041,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0105,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0167,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0168,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0169,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0185,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0461,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0462,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0463,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0464.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gs_new_p0000,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0001,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0002,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0006,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0008,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0009,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0014,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0019,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0032,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0033,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0041,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0105,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0167,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0168,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0169,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0185,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0461,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0462,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0463,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0464.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;zhr_pcl2,&nbsp;t569v,&nbsp;t549a,&nbsp;t549q.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;p_cp&nbsp;EQ&nbsp;'X'.&nbsp;"Period&nbsp;is&nbsp;employee&nbsp;dependent,&nbsp;unless&nbsp;running&nbsp;for&nbsp;other&nbsp;period&nbsp;and&nbsp;one&nbsp;payroll&nbsp;area.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gv_frper,&nbsp;gv_frbeg,&nbsp;gv_frend.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gs_employee_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_employee_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_employee_data.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gv_effective_date,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_transfer_date,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_comp_change_date.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gv_same_tax_form,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_bank,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_exemptions.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gs_change_blocks.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;clear:&nbsp;gv_time_iteration.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gv_date_01,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_06,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_07,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_08,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_09,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_11,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_12,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_98,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_99.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gv_abart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_trfkz,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_zeinh.<br />
+<br />
+&nbsp;&nbsp;MOVE&nbsp;'0'&nbsp;TO&nbsp;gs_export_flags-ed_export.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Reset&nbsp;the&nbsp;export&nbsp;flag&nbsp;for&nbsp;the&nbsp;employee&nbsp;data&nbsp;record<br />
+<br />
+ENDFORM.                    " INIT_GLOBALS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;EXPORT_DATA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Export&nbsp;data<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM export_data USING fv_seqnr.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_if_key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_key,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_version&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_version.<br />
+<br />
+&nbsp;&nbsp;MOVE:&nbsp;pernr-pernr&nbsp;TO&nbsp;ls_if_key-pernr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_seqnr&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;ls_if_key-seqnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gc_if_name&nbsp;&nbsp;TO&nbsp;ls_if_key-fldid.<br />
+<br />
+&nbsp;&nbsp;ls_if_version-cdate&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;ls_if_version-ctime&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;ls_if_version-cprog&nbsp;=&nbsp;sy-repid.<br />
+&nbsp;&nbsp;ls_if_version-uname&nbsp;=&nbsp;sy-uname.<br />
+<br />
+&nbsp;&nbsp;zhr_pcl2-aedtm&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;zhr_pcl2-uname&nbsp;=&nbsp;sy-uname.<br />
+&nbsp;&nbsp;zhr_pcl2-pgmid&nbsp;=&nbsp;sy-repid.<br />
+&nbsp;&nbsp;zhr_pcl2-versn&nbsp;=&nbsp;gc_if_version.<br />
+<br />
+&nbsp;&nbsp;EXPORT&nbsp;if_version&nbsp;FROM&nbsp;ls_if_version<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0000_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0000<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0001_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0001<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0002_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0002<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0006_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0006<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0008_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0008<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0009_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0009<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0014_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0014<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0019_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0019<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0032_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0032<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0033_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0033<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0041_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0041<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0105_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0105<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0167_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0167<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0168_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0168<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0169_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0169<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0185_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0461_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0461<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0462_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0462<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0463_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0463<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0464_exp&nbsp;&nbsp;FROM&nbsp;gt_new_p0464<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;DATABASE&nbsp;zhr_pcl2(if)&nbsp;ID&nbsp;ls_if_key.<br />
+<br />
+ENDFORM.                    " EXPORT_DATA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_CURRENT_PERIOD<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;Current&nbsp;Period<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_FRPER&nbsp;&nbsp;Current&nbsp;Period<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_FRBEG&nbsp;&nbsp;Period&nbsp;Begin&nbsp;Date<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_FREND&nbsp;&nbsp;Period&nbsp;End&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_current_period  CHANGING fv_frper<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_frend.<br />
+<br />
+&nbsp;&nbsp;SELECT&nbsp;&nbsp;*&nbsp;FROM&nbsp;t569v&nbsp;WHERE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;abkrs&nbsp;EQ&nbsp;pernr-abkrs&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;vwsaz&nbsp;EQ&nbsp;'1'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;*&nbsp;FROM&nbsp;t549a&nbsp;WHERE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abkrs&nbsp;EQ&nbsp;pernr-abkrs.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;*&nbsp;FROM&nbsp;t549q&nbsp;WHERE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;permo&nbsp;EQ&nbsp;t549a-permo&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pabrj&nbsp;EQ&nbsp;t569v-pabrj&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pabrp&nbsp;EQ&nbsp;t569v-pabrp.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;t569v-pabrj&nbsp;t569v-pabrp&nbsp;INTO&nbsp;fv_frper.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;t549q-begda&nbsp;TO&nbsp;fv_frbeg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;t549q-endda&nbsp;TO&nbsp;fv_frend.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDSELECT.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDSELECT.<br />
+<br />
+&nbsp;&nbsp;ENDSELECT.<br />
+<br />
+ENDFORM.                    " GET_CURRENT_PERIOD<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_OLD_DATA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;old&nbsp;data&nbsp;from&nbsp;ZHR_PCL2&nbsp;cluster&nbsp;table<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_old_data .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_seqnr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;9,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_key,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_version&nbsp;TYPE&nbsp;ts_if_version.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_last_seqnr&nbsp;CHANGING&nbsp;lv_seqnr.<br />
+<br />
+&nbsp;&nbsp;MOVE:&nbsp;pernr-pernr&nbsp;TO&nbsp;ls_if_key-pernr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_seqnr&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;ls_if_key-seqnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gc_if_name&nbsp;&nbsp;TO&nbsp;ls_if_key-fldid.<br />
+<br />
+&nbsp;&nbsp;IMPORT&nbsp;if_version&nbsp;TO&nbsp;ls_if_version<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0000_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0000<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0001_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0001<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0002_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0002<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0006_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0006<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0008_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0008<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0009_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0009<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0014_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0014<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0019_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0019<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0032_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0032<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0033_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0033<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0041_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0041<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0105_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0105<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0167_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0167<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0168_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0168<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0169_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0169<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0185_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0461_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0461<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0462_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0462<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0463_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0463<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p0464_exp&nbsp;&nbsp;TO&nbsp;gt_old_p0464<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;DATABASE&nbsp;zhr_pcl2(if)&nbsp;ID&nbsp;ls_if_key.<br />
+<br />
+ENDFORM.                    " GET_OLD_DATA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_LAST_SEQNR<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;the&nbsp;latest&nbsp;sequence&nbsp;number<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_SEQNR&nbsp;&nbsp;Sequence&nbsp;number<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_last_seqnr  CHANGING fv_seqnr.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_id_key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_id_key,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_version&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_version,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_if_results&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_if_results,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lt_if_results&nbsp;&nbsp;&nbsp;TYPE&nbsp;tt_if_results.<br />
+<br />
+&nbsp;&nbsp;ls_id_key-pernr&nbsp;=&nbsp;pernr-pernr.<br />
+&nbsp;&nbsp;ls_id_key-fldid&nbsp;=&nbsp;gc_if_name.<br />
+&nbsp;&nbsp;IMPORT&nbsp;if_version&nbsp;&nbsp;TO&nbsp;ls_if_version<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if_results&nbsp;&nbsp;TO&nbsp;lt_if_results<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;DATABASE&nbsp;zhr_pcl2(id)&nbsp;ID&nbsp;ls_id_key.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;lt_if_results&nbsp;BY&nbsp;seqnr&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;lt_if_results&nbsp;INTO&nbsp;ls_if_results&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;fv_seqnr&nbsp;=&nbsp;ls_if_results-seqnr.<br />
+<br />
+ENDFORM.                    " GET_LAST_SEQNR<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;BEGIN<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Begiin&nbsp;of&nbsp;interface<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM begin .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;ls_column_names&nbsp;TYPE&nbsp;ts_column_names.<br />
+<br />
+&nbsp;&nbsp;go_structdescr_ed&nbsp;?=&nbsp;cl_abap_typedescr=&gt;describe_by_name(&nbsp;'TS_EMPLOYEE_DATA'&nbsp;&nbsp;).<br />
+<br />
+&nbsp;&nbsp;MOVE:&nbsp;'POSITION_ID'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Position&nbsp;ID'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'CHANGE_EFFECTIVE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Change&nbsp;Effective&nbsp;On'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'IS_PAID_BY_WFN'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Is&nbsp;Paid&nbsp;By&nbsp;WFN'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'POS_USES_TIME'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Position&nbsp;Uses&nbsp;Time'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'CO_CODE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Co&nbsp;Code'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'FILE_NUMBER'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'File&nbsp;Number'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'HIRE_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Hire&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SENIORITY_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Seniority&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'CREDITED_SERVICE_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Credited&nbsp;Service&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADJUSTED_SERVICE_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Adjusted&nbsp;Service&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'EMPLOYEE_STATUS'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Employee&nbsp;Status'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TERMINATION_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Termination&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TERM_REASON'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Termination&nbsp;Reason'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'REHIRE_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Rehire&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'REHIRE_REASON'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Rehire&nbsp;Reason'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LOA_START_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Leave&nbsp;of&nbsp;Absence&nbsp;Start&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LOA_EXP_RET_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Leave&nbsp;of&nbsp;Absence&nbsp;Expected&nbsp;Return&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LOA_RETURN_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Leave&nbsp;of&nbsp;Absence&nbsp;Return&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LOA_REASON'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Leave&nbsp;of&nbsp;Absence&nbsp;Reason'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'POS_START_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Position&nbsp;Start&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'REPORTS_TO_ID'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Reports&nbsp;to&nbsp;Position&nbsp;ID'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'HOME_COST_NUMBER'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Home&nbsp;Cost&nbsp;Number'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'HOME_DEPARTMENT'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Home&nbsp;Department'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LOCATION_CODE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Location&nbsp;Code'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PAY_GROUP'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Pay&nbsp;Group'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LAST_NAME'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Last&nbsp;Name'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'FIRST_NAME'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'First&nbsp;Name'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ACTUAL_MAR_STA'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Actual&nbsp;Marital&nbsp;Status'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TAX_ID_NUMBER'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Tax&nbsp;ID&nbsp;Number'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TAX_ID_EXPY_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Tax&nbsp;ID&nbsp;Expiry&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'BIRTH_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Birth&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'CORRESP_LANG'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Correspondence&nbsp;Language'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'GENDER'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Gender'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDR1_USE_AS_LEG'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;1&nbsp;Use&nbsp;as&nbsp;Legal'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDRESS_LINE_1'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;Line&nbsp;1'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDRESS_LINE_2'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;Line&nbsp;2'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDRESS_1_PROV'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;1&nbsp;Province'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDRESS_1_CITY'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;1&nbsp;City'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDRESS_1_PSTLCD'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;1&nbsp;Postal&nbsp;Code'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'ADDRESS_1_CNTRY'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Address&nbsp;1&nbsp;Country'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'RECEIVE_SCHD_PAY'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Receive&nbsp;Scheduled&nbsp;Payment'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'STANDARD_HOURS'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Standard&nbsp;Hours'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'RATE_TYPE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Rate&nbsp;Type'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'RATE_AMOUNT'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Rate&nbsp;Amount'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'COMP_CHNGE_REASN'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Compensation&nbsp;Change&nbsp;Reason'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SAME_TAX_FORM'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Same&nbsp;Tax&nbsp;Form'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TRANSFER_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Transfer&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PAYMENT_METHOD'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Payment&nbsp;Method'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PRIMARY_BANK'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Primary&nbsp;Bank'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PRIMARY_BRANCH'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Primary&nbsp;Branch'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PRIMARY_ACCNT_NO'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Primary&nbsp;Account&nbsp;Number'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SECONDARY_BANK'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Secondary&nbsp;Bank'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SECONDARY_BRANCH'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Secondary&nbsp;Branch'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SECOND_ACCNT_NO'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Secondary&nbsp;Account&nbsp;Number'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SECOND_DEP_AMNT'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Secondary&nbsp;Deposit&nbsp;Amount'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PROV_OF_EMPLYMNT'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Province&nbsp;of&nbsp;Employment'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'CRA_PA_RQ_ID'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'CRA&nbsp;PA&nbsp;/&nbsp;RQ&nbsp;ID'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'FEDTAX_CRDT_TYPE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Fed&nbsp;Tax&nbsp;Credit&nbsp;Type'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;MOVE:&nbsp;'FEDTAX_CRDT_OAMT'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Fed&nbsp;Tax&nbsp;Credit&nbsp;Other&nbsp;Amount'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE:&nbsp;'PRVTAX_CRDT_TYPE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Prov&nbsp;Tax&nbsp;Credit&nbsp;Type'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;MOVE:&nbsp;'PRVTAX_CRDT_OAMT'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Prov&nbsp;Tax&nbsp;Credit&nbsp;Other&nbsp;Amount'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+*&nbsp;&nbsp;MOVE:&nbsp;'DONT_CALC_FEDTAX'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Do&nbsp;Not&nbsp;Calc&nbsp;Federal&nbsp;Tax'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+*&nbsp;&nbsp;MOVE:&nbsp;'DONT_CALC_C_QPP'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Do&nbsp;Not&nbsp;Calc&nbsp;C/QPP'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+*&nbsp;&nbsp;MOVE:&nbsp;'DO_NOT_CALC_EI'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Do&nbsp;Not&nbsp;Calc&nbsp;EI'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+*&nbsp;&nbsp;MOVE:&nbsp;'REASON_FOR_ISSUE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Reason&nbsp;for&nbsp;Issue'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+*&nbsp;&nbsp;MOVE:&nbsp;'COMMENTS_ON_ROE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Comments&nbsp;on&nbsp;ROE'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+*&nbsp;&nbsp;MOVE:&nbsp;'EMPLOYEE_OCCUP'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Employee&nbsp;Occupation'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE:&nbsp;'FIRST_DAY_WORKED'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'First&nbsp;Day&nbsp;Worked'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'LAST_DAY_PAID'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Last&nbsp;Day&nbsp;Paid'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'EXPECTED_RECALL'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Expected&nbsp;Recall'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'EXPD_RECALL_DATE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Expected&nbsp;Recall&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'READY_TO_ISSUE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Ready&nbsp;to&nbsp;Issue'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'BADGE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'BADGE'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'PAYCLASS'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'PAYCLASS'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'BEGDA_TRACK_TIME'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Start&nbsp;Date&nbsp;for&nbsp;Tracking&nbsp;Time'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;MOVE:&nbsp;'ENDDA_TRACK_TIME'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Stop&nbsp;Date&nbsp;for&nbsp;Tracking&nbsp;Time'&nbsp;TO&nbsp;ls_column_names-name.<br />
+*&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE:&nbsp;'SUPERVISORFLAG'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'SUPERVISORFLAG'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'SUPERVISORID'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'SUPERVISORID'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TIMEZONE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'TimeZone'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'XFERTOPAYROLL'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'TRANSFERTOPAYROLL'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TO_POLICY_NAME'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Time&nbsp;Off&nbsp;Policy&nbsp;Name'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'TO_PLCYASS_BEGDA'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Time&nbsp;Off&nbsp;Policy&nbsp;Assignment&nbsp;Start&nbsp;Date'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'WORK_EMAIL'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Work&nbsp;Email'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'UNION_CODE'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Union&nbsp;Code'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+&nbsp;&nbsp;MOVE:&nbsp;'WORKER_CATEGORY'&nbsp;TO&nbsp;ls_column_names-field,&nbsp;'Worker&nbsp;Category'&nbsp;TO&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_column_names&nbsp;TO&nbsp;gt_column_names.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_header&nbsp;CHANGING&nbsp;gs_header.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_header&nbsp;TO&nbsp;gt_file_1.<br />
+<br />
+ENDFORM.                    " BEGIN<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_HEADER<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;the&nbsp;header&nbsp;line<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FS_HEADER&nbsp;&nbsp;Header&nbsp;line<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_header  CHANGING fs_header TYPE ts_raw_line.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_index&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_component&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;abap_compdescr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_column_names&nbsp;TYPE&nbsp;ts_column_names.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;go_structdescr_ed-&gt;components&nbsp;INTO&nbsp;ls_component.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_index&nbsp;=&nbsp;lv_index&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_column_names&nbsp;INTO&nbsp;ls_column_names&nbsp;WITH&nbsp;KEY&nbsp;field&nbsp;=&nbsp;ls_component-name.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;lv_index&nbsp;EQ&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fs_header&nbsp;=&nbsp;ls_column_names-name.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;fs_header&nbsp;','&nbsp;ls_column_names-name&nbsp;INTO&nbsp;fs_header.<br />
+<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.                    " GET_HEADER<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHANGE_VALIDATION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change&nbsp;validation&nbsp;logic<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM change_validation .<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Set&nbsp;change&nbsp;block&nbsp;flags&nbsp;to&nbsp;get&nbsp;old/new&nbsp;data.&nbsp;&nbsp;Then&nbsp;clear&nbsp;again&nbsp;after.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;set_cb_flags.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Process&nbsp;old&nbsp;data<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;set_old_data_records.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_dates.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_comp_details.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_bank_details.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_exemptions.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_wfn_data&nbsp;USING&nbsp;gc_part.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Process&nbsp;new&nbsp;data<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;set_new_data_records.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_dates.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_comp_details.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_bank_details.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_exemptions.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_wfn_data&nbsp;USING&nbsp;gc_part.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Check&nbsp;if&nbsp;secondary&nbsp;bank&nbsp;has&nbsp;been&nbsp;deleted&nbsp;(delimited)<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;check_for_bank_deletion.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;gs_change_blocks.&nbsp;&nbsp;&nbsp;"Clear&nbsp;the&nbsp;change&nbsp;block&nbsp;flags<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Check&nbsp;for&nbsp;changes&nbsp;and&nbsp;there&nbsp;respective&nbsp;effective&nbsp;dates.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;check_for_changes.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_comp_change_date&nbsp;CHANGING&nbsp;gv_comp_change_date.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_transfers&nbsp;CHANGING&nbsp;gv_same_tax_form&nbsp;gv_transfer_date.<br />
+<br />
+<br />
+ENDFORM.                    " CHANGE_VALIDATION<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SET_CB_FLAGS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set&nbsp;the&nbsp;change&nbsp;block&nbsp;flags&nbsp;for&nbsp;getting&nbsp;old/new&nbsp;results<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_cb_flags .<br />
+<br />
+&nbsp;&nbsp;MOVE&nbsp;'X'&nbsp;TO&nbsp;:&nbsp;gs_change_blocks-cb_1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_5,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_6,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_7,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_9,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_11,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_12,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_13,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_14,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_15,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_17,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_18,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_19,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_20,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_21,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_22,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_23,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_24,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_25,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_26,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_27,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_28,<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_29<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_30,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_31,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_32.<br />
+<br />
+ENDFORM.                    " SET_CB_FLAGS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SET_OLD_DATA_RECORDS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set&nbsp;old&nbsp;data&nbsp;records<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_old_data_records .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lr_p0000&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0001&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0002&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0006&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0008&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0009&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_t0009&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0019&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0032&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0033&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_t0033&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0041&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0105&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0185&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0461&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0462&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0463&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0464&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0000&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0000&nbsp;INTO&nbsp;gs_old_p0000&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0001&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0001&nbsp;INTO&nbsp;gs_old_p0001&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0002&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0002&nbsp;INTO&nbsp;gs_old_p0002&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0006&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0006&nbsp;INTO&nbsp;gs_old_p0006&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0008&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0008&nbsp;INTO&nbsp;gs_old_p0008&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0009&nbsp;BY&nbsp;subty&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0019&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0019&nbsp;INTO&nbsp;gs_old_p0019&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0032&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0032&nbsp;INTO&nbsp;gs_old_p0032&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0033&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0033&nbsp;INTO&nbsp;gs_old_p0033&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0041&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0041&nbsp;INTO&nbsp;gs_old_p0041&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0105&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0105&nbsp;INTO&nbsp;gs_old_p0105&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0185&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0185&nbsp;INTO&nbsp;gs_old_p0185&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0461&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0461&nbsp;INTO&nbsp;gs_old_p0461&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0462&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0462&nbsp;INTO&nbsp;gs_old_p0462&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0463&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0463&nbsp;INTO&nbsp;gs_old_p0463&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0464&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0464&nbsp;INTO&nbsp;gs_old_p0464&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0000&nbsp;TYPE&nbsp;ts_p0000.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0001&nbsp;TYPE&nbsp;ts_p0001.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0002&nbsp;TYPE&nbsp;ts_p0002.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0006&nbsp;TYPE&nbsp;ts_p0006.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0008&nbsp;TYPE&nbsp;ts_p0008.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0009&nbsp;TYPE&nbsp;ts_p0009.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_t0009&nbsp;TYPE&nbsp;tt_p0009.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0019&nbsp;TYPE&nbsp;ts_p0019.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0032&nbsp;TYPE&nbsp;ts_p0032.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0033&nbsp;TYPE&nbsp;ts_p0033.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_t0033&nbsp;TYPE&nbsp;tt_p0033.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0041&nbsp;TYPE&nbsp;ts_p0041.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0105&nbsp;TYPE&nbsp;ts_p0105.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0185&nbsp;TYPE&nbsp;ts_p0185.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0461&nbsp;TYPE&nbsp;ts_p0461.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0462&nbsp;TYPE&nbsp;ts_p0462.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0463&nbsp;TYPE&nbsp;ts_p0463.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0464&nbsp;TYPE&nbsp;ts_p0464.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0000-&gt;*&nbsp;TO&nbsp;&lt;gs_p0000&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0001-&gt;*&nbsp;TO&nbsp;&lt;gs_p0001&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0002-&gt;*&nbsp;TO&nbsp;&lt;gs_p0002&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0006-&gt;*&nbsp;TO&nbsp;&lt;gs_p0006&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0008-&gt;*&nbsp;TO&nbsp;&lt;gs_p0008&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0009-&gt;*&nbsp;TO&nbsp;&lt;gs_p0009&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_t0009-&gt;*&nbsp;TO&nbsp;&lt;gt_p0009&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0019-&gt;*&nbsp;TO&nbsp;&lt;gs_p0019&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0032-&gt;*&nbsp;TO&nbsp;&lt;gs_p0032&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0033-&gt;*&nbsp;TO&nbsp;&lt;gs_p0033&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_t0033-&gt;*&nbsp;TO&nbsp;&lt;gt_p0033&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0041-&gt;*&nbsp;TO&nbsp;&lt;gs_p0041&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0105-&gt;*&nbsp;TO&nbsp;&lt;gs_p0105&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0185-&gt;*&nbsp;TO&nbsp;&lt;gs_p0185&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0461-&gt;*&nbsp;TO&nbsp;&lt;gs_p0461&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0462-&gt;*&nbsp;TO&nbsp;&lt;gs_p0462&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0463-&gt;*&nbsp;TO&nbsp;&lt;gs_p0463&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0464-&gt;*&nbsp;TO&nbsp;&lt;gs_p0464&gt;.<br />
+<br />
+&nbsp;&nbsp;&lt;gs_p0000&gt;&nbsp;=&nbsp;gs_old_p0000.<br />
+&nbsp;&nbsp;&lt;gs_p0001&gt;&nbsp;=&nbsp;gs_old_p0001.<br />
+&nbsp;&nbsp;&lt;gs_p0002&gt;&nbsp;=&nbsp;gs_old_p0002.<br />
+&nbsp;&nbsp;&lt;gs_p0006&gt;&nbsp;=&nbsp;gs_old_p0006.<br />
+&nbsp;&nbsp;&lt;gs_p0008&gt;&nbsp;=&nbsp;gs_old_p0008.<br />
+&nbsp;&nbsp;&lt;gs_p0009&gt;&nbsp;=&nbsp;gs_old_p0009.<br />
+&nbsp;&nbsp;&lt;gt_p0009&gt;&nbsp;=&nbsp;gt_old_p0009[].<br />
+&nbsp;&nbsp;&lt;gs_p0019&gt;&nbsp;=&nbsp;gs_old_p0019.<br />
+&nbsp;&nbsp;&lt;gs_p0032&gt;&nbsp;=&nbsp;gs_old_p0032.<br />
+&nbsp;&nbsp;&lt;gs_p0033&gt;&nbsp;=&nbsp;gs_old_p0033.<br />
+&nbsp;&nbsp;&lt;gt_p0033&gt;&nbsp;=&nbsp;gt_old_p0033[].<br />
+&nbsp;&nbsp;&lt;gs_p0041&gt;&nbsp;=&nbsp;gs_old_p0041.<br />
+&nbsp;&nbsp;&lt;gs_p0105&gt;&nbsp;=&nbsp;gs_old_p0105.<br />
+&nbsp;&nbsp;&lt;gs_p0185&gt;&nbsp;=&nbsp;gs_old_p0185.<br />
+&nbsp;&nbsp;&lt;gs_p0461&gt;&nbsp;=&nbsp;gs_old_p0461.<br />
+&nbsp;&nbsp;&lt;gs_p0462&gt;&nbsp;=&nbsp;gs_old_p0462.<br />
+&nbsp;&nbsp;&lt;gs_p0463&gt;&nbsp;=&nbsp;gs_old_p0463.<br />
+&nbsp;&nbsp;&lt;gs_p0464&gt;&nbsp;=&nbsp;gs_old_p0464.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;gs_old_employee_data&nbsp;TO&nbsp;&lt;gs_employee_data&gt;.<br />
+<br />
+<br />
+ENDFORM.                    " SET_OLD_DATA_RECORDS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;SET_NEW_DATA_RECORDS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set&nbsp;new&nbsp;data&nbsp;records<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_new_data_records .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lr_p0000&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0001&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0002&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0006&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0008&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0009&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_t0009&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0019&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0032&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0033&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_t0033&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0041&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0105&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0185&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0461&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0462&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0463&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lr_p0464&nbsp;TYPE&nbsp;REF&nbsp;TO&nbsp;data.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0000&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0000&nbsp;INTO&nbsp;gs_new_p0000&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0001&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0001&nbsp;INTO&nbsp;gs_new_p0001&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0002&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0002&nbsp;INTO&nbsp;gs_new_p0002&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0006&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0006&nbsp;INTO&nbsp;gs_new_p0006&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0008&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0008&nbsp;INTO&nbsp;gs_new_p0008&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0009&nbsp;BY&nbsp;subty&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0019&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0019&nbsp;INTO&nbsp;gs_new_p0019&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0032&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0032&nbsp;INTO&nbsp;gs_new_p0032&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0033&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0033&nbsp;INTO&nbsp;gs_new_p0033&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0041&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0041&nbsp;INTO&nbsp;gs_new_p0041&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0105&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0105&nbsp;INTO&nbsp;gs_new_p0105&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0185&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0185&nbsp;INTO&nbsp;gs_new_p0185&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0461&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0461&nbsp;INTO&nbsp;gs_new_p0461&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0462&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0462&nbsp;INTO&nbsp;gs_new_p0462&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0463&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0463&nbsp;INTO&nbsp;gs_new_p0463&nbsp;INDEX&nbsp;1.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0464&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0464&nbsp;INTO&nbsp;gs_new_p0464&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0000&nbsp;TYPE&nbsp;ts_p0000.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0001&nbsp;TYPE&nbsp;ts_p0001.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0002&nbsp;TYPE&nbsp;ts_p0002.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0006&nbsp;TYPE&nbsp;ts_p0006.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0008&nbsp;TYPE&nbsp;ts_p0008.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0009&nbsp;TYPE&nbsp;ts_p0009.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_t0009&nbsp;TYPE&nbsp;tt_p0009.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0019&nbsp;TYPE&nbsp;ts_p0019.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0032&nbsp;TYPE&nbsp;ts_p0032.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0033&nbsp;TYPE&nbsp;ts_p0033.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_t0033&nbsp;TYPE&nbsp;tt_p0033.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0041&nbsp;TYPE&nbsp;ts_p0041.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0105&nbsp;TYPE&nbsp;ts_p0105.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0185&nbsp;TYPE&nbsp;ts_p0185.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0461&nbsp;TYPE&nbsp;ts_p0461.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0462&nbsp;TYPE&nbsp;ts_p0462.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0463&nbsp;TYPE&nbsp;ts_p0463.<br />
+&nbsp;&nbsp;CREATE&nbsp;DATA&nbsp;lr_p0464&nbsp;TYPE&nbsp;ts_p0464.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0000-&gt;*&nbsp;TO&nbsp;&lt;gs_p0000&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0001-&gt;*&nbsp;TO&nbsp;&lt;gs_p0001&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0002-&gt;*&nbsp;TO&nbsp;&lt;gs_p0002&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0006-&gt;*&nbsp;TO&nbsp;&lt;gs_p0006&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0008-&gt;*&nbsp;TO&nbsp;&lt;gs_p0008&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0009-&gt;*&nbsp;TO&nbsp;&lt;gs_p0009&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_t0009-&gt;*&nbsp;TO&nbsp;&lt;gt_p0009&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0019-&gt;*&nbsp;TO&nbsp;&lt;gs_p0019&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0032-&gt;*&nbsp;TO&nbsp;&lt;gs_p0032&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0033-&gt;*&nbsp;TO&nbsp;&lt;gs_p0033&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_t0033-&gt;*&nbsp;TO&nbsp;&lt;gt_p0033&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0041-&gt;*&nbsp;TO&nbsp;&lt;gs_p0041&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0105-&gt;*&nbsp;TO&nbsp;&lt;gs_p0105&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0185-&gt;*&nbsp;TO&nbsp;&lt;gs_p0185&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0461-&gt;*&nbsp;TO&nbsp;&lt;gs_p0461&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0462-&gt;*&nbsp;TO&nbsp;&lt;gs_p0462&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0463-&gt;*&nbsp;TO&nbsp;&lt;gs_p0463&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;lr_p0464-&gt;*&nbsp;TO&nbsp;&lt;gs_p0464&gt;.<br />
+<br />
+&nbsp;&nbsp;&lt;gs_p0000&gt;&nbsp;=&nbsp;gs_new_p0000.<br />
+&nbsp;&nbsp;&lt;gs_p0001&gt;&nbsp;=&nbsp;gs_new_p0001.<br />
+&nbsp;&nbsp;&lt;gs_p0002&gt;&nbsp;=&nbsp;gs_new_p0002.<br />
+&nbsp;&nbsp;&lt;gs_p0006&gt;&nbsp;=&nbsp;gs_new_p0006.<br />
+&nbsp;&nbsp;&lt;gs_p0008&gt;&nbsp;=&nbsp;gs_new_p0008.<br />
+&nbsp;&nbsp;&lt;gs_p0009&gt;&nbsp;=&nbsp;gs_new_p0009.<br />
+&nbsp;&nbsp;&lt;gt_p0009&gt;&nbsp;=&nbsp;gt_new_p0009[].<br />
+&nbsp;&nbsp;&lt;gs_p0019&gt;&nbsp;=&nbsp;gs_new_p0019.<br />
+&nbsp;&nbsp;&lt;gs_p0032&gt;&nbsp;=&nbsp;gs_new_p0032.<br />
+&nbsp;&nbsp;&lt;gs_p0033&gt;&nbsp;=&nbsp;gs_new_p0033.<br />
+&nbsp;&nbsp;&lt;gt_p0033&gt;&nbsp;=&nbsp;gt_new_p0033[].<br />
+&nbsp;&nbsp;&lt;gs_p0041&gt;&nbsp;=&nbsp;gs_new_p0041.<br />
+&nbsp;&nbsp;&lt;gs_p0105&gt;&nbsp;=&nbsp;gs_new_p0105.<br />
+&nbsp;&nbsp;&lt;gs_p0185&gt;&nbsp;=&nbsp;gs_new_p0185.<br />
+&nbsp;&nbsp;&lt;gs_p0461&gt;&nbsp;=&nbsp;gs_new_p0461.<br />
+&nbsp;&nbsp;&lt;gs_p0462&gt;&nbsp;=&nbsp;gs_new_p0462.<br />
+&nbsp;&nbsp;&lt;gs_p0463&gt;&nbsp;=&nbsp;gs_new_p0463.<br />
+&nbsp;&nbsp;&lt;gs_p0464&gt;&nbsp;=&nbsp;gs_new_p0464.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;gs_new_employee_data&nbsp;TO&nbsp;&lt;gs_employee_data&gt;.<br />
+<br />
+ENDFORM.                    " SET_NEW_DATA_RECORDS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_DATES<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;dates&nbsp;from&nbsp;Infotype&nbsp;41<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_dates .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_darnn&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'DARNN',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_datnn&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'DATNN',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;&nbsp;&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;2.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_darnn&gt;&nbsp;TYPE&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_datnn&gt;&nbsp;TYPE&nbsp;data.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;gv_date_01,&nbsp;"Original&nbsp;Hire&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_06,&nbsp;"Ajusted&nbsp;Service&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_07,&nbsp;"Last&nbsp;Day&nbsp;Worked<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_08,&nbsp;"Last&nbsp;Day&nbsp;Paid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_09,&nbsp;"Rehire&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_11,&nbsp;"Tax&nbsp;ID&nbsp;Expiry&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_12,&nbsp;"Seniority&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_98,&nbsp;"Hire&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date_99.&nbsp;"Termination&nbsp;Date<br />
+<br />
+&nbsp;&nbsp;CHECK&nbsp;&lt;gs_p0041&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;DO&nbsp;12&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;=&nbsp;lv_num&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_darnn+3(2)&nbsp;=&nbsp;lv_num.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_datnn+3(2)&nbsp;=&nbsp;lv_num.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_darnn&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0041&gt;&nbsp;TO&nbsp;&lt;lv_darnn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_datnn&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0041&gt;&nbsp;TO&nbsp;&lt;lv_datnn&gt;.<br />
+<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_darnn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_01.&nbsp;&nbsp;&nbsp;"Original&nbsp;Hire&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'06'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_06.&nbsp;&nbsp;&nbsp;"Ajusted&nbsp;Service&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'07'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_07.&nbsp;&nbsp;&nbsp;"Last&nbsp;Day&nbsp;Worked<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'08'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_08.&nbsp;&nbsp;&nbsp;"Last&nbsp;Day&nbsp;Paid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'09'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_09.&nbsp;&nbsp;&nbsp;"Rehire&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'11'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_11.&nbsp;&nbsp;&nbsp;"Tax&nbsp;ID&nbsp;Expiry&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'12'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;gv_date_12.&nbsp;&nbsp;&nbsp;"Seniority&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+ENDFORM.                    " GET_DATES<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_COMP_DETAILS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;compensation&nbsp;details<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_comp_details .<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_persg&gt;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_persk&gt;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_trfgb&gt;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_trfar&gt;.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;gv_abart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_trfkz,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_zeinh.<br />
+<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PERSG'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_persg&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'PERSK'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0001&gt;&nbsp;TO&nbsp;&lt;lv_persk&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TRFGB'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0008&gt;&nbsp;TO&nbsp;&lt;lv_trfgb&gt;.<br />
+&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'TRFAR'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0008&gt;&nbsp;TO&nbsp;&lt;lv_trfar&gt;.<br />
+<br />
+&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;abart&nbsp;trfkz&nbsp;FROM&nbsp;t503&nbsp;INTO&nbsp;(gv_abart,&nbsp;gv_trfkz)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;persg&nbsp;EQ&nbsp;&lt;lv_persg&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;persk&nbsp;EQ&nbsp;&lt;lv_persk&gt;.<br />
+<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'RP_ZEINH_GET'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_molga&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'07'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_trfgb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&lt;lv_trfgb&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_trfar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&lt;lv_trfar&gt;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_trfkz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gv_trfkz<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gv_frbeg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_zeinh&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gv_zeinh<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_entry_t549r&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;illegal_zeinh&nbsp;&nbsp;=&nbsp;2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;3.<br />
+<br />
+ENDFORM.                    " GET_COMP_DETAILS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_BANK_DETAILS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;bank&nbsp;details<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_bank_details .<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_subty&gt;,&nbsp;&lt;lv_begda&gt;,&nbsp;&lt;lv_bankl&gt;,&nbsp;&lt;lv_bankn&gt;,&nbsp;&lt;lv_zlsch&gt;,&nbsp;&lt;lv_betrg&gt;.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_bank.<br />
+<br />
+&nbsp;&nbsp;CHECK&nbsp;&lt;gt_p0009&gt;&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;&lt;gt_p0009&gt;&nbsp;ASSIGNING&nbsp;&lt;gs_p0009&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'SUBTY'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_subty&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_subty&gt;&nbsp;EQ&nbsp;'0'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BEGDA'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_begda&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BANKL'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_bankl&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BANKN'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_bankn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'ZLSCH'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_zlsch&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_begda&gt;&nbsp;TO&nbsp;gs_bank-effective_date_p.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_zlsch&gt;&nbsp;EQ&nbsp;'C'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'C'&nbsp;TO&nbsp;gs_bank-payment_method.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'D'&nbsp;TO&nbsp;gs_bank-payment_method.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bankl&gt;+1(3)&nbsp;TO&nbsp;gs_bank-primary_bank.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bankl&gt;+4(5)&nbsp;TO&nbsp;gs_bank-primary_branch.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bankn&gt;&nbsp;TO&nbsp;gs_bank-primary_accnt_no.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;NE&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'C'&nbsp;TO&nbsp;gs_bank-payment_method.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;&lt;gt_p0009&gt;&nbsp;ASSIGNING&nbsp;&lt;gs_p0009&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'SUBTY'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_subty&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_subty&gt;&nbsp;EQ&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BEGDA'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_begda&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BANKL'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_bankl&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BANKN'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_bankn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;'BETRG'&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0009&gt;&nbsp;TO&nbsp;&lt;lv_betrg&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_begda&gt;&nbsp;TO&nbsp;gs_bank-effective_date_s.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bankl&gt;+1(3)&nbsp;TO&nbsp;gs_bank-secondary_bank.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bankl&gt;+4(5)&nbsp;TO&nbsp;gs_bank-secondary_branch.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_bankn&gt;&nbsp;TO&nbsp;gs_bank-second_accnt_no.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_betrg&gt;&nbsp;TO&nbsp;gs_bank-second_dep_amnt.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHIFT&nbsp;gs_bank-second_dep_amnt&nbsp;LEFT&nbsp;DELETING&nbsp;LEADING&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.                    " GET_BANK_DETAILS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_EXEMPTIONS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;employee&nbsp;exemptions.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_exemptions .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_tax&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'TAX00',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_exi&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'EXI00',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;2.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_tax&gt;,&nbsp;&lt;lv_exi&gt;.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_exemptions.<br />
+<br />
+&nbsp;&nbsp;DO&nbsp;15&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;sy-index&nbsp;TO&nbsp;lv_num.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_num&nbsp;TO:&nbsp;&nbsp;lv_tax+3(2),&nbsp;lv_exi+3(2).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_tax&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0464&gt;&nbsp;TO&nbsp;&lt;lv_tax&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_exi&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_p0464&gt;&nbsp;TO&nbsp;&lt;lv_exi&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_tax&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'FIT'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_exi&gt;&nbsp;TO&nbsp;gs_exemptions-fed.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'CPP'&nbsp;OR&nbsp;'QPP'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_exi&gt;&nbsp;TO&nbsp;gs_exemptions-cpp.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'EI'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_exi&gt;&nbsp;TO&nbsp;gs_exemptions-ei.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDDO.<br />
+ENDFORM.                    " GET_EXEMPTIONS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_WFN_DATA<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;WFN&nbsp;data&nbsp;based&nbsp;on&nbsp;field&nbsp;symbols&nbsp;and&nbsp;parameters<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_ALL&nbsp;&nbsp;&nbsp;If&nbsp;'1',&nbsp;then&nbsp;process&nbsp;all&nbsp;fields<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Else&nbsp;process&nbsp;only&nbsp;the&nbsp;fields&nbsp;that&nbsp;need&nbsp;to&nbsp;be<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compared&nbsp;for&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_wfn_data USING fv_all.<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_return&gt;.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;&lt;gs_employee_data&gt;.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;go_structdescr_ed-&gt;components&nbsp;INTO&nbsp;gs_component.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;gs_component-name&nbsp;OF&nbsp;STRUCTURE&nbsp;&lt;gs_employee_data&gt;&nbsp;TO&nbsp;&lt;lv_return&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;(gs_component-name)&nbsp;IN&nbsp;PROGRAM&nbsp;zhro_adp_wfn_ca&nbsp;IF&nbsp;FOUND&nbsp;USING&nbsp;&lt;lv_return&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;fv_all&nbsp;EQ&nbsp;gc_all.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;'_'&nbsp;gs_component-name&nbsp;INTO&nbsp;gs_component-name.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;(gs_component-name)&nbsp;IN&nbsp;PROGRAM&nbsp;zhro_adp_wfn_ca&nbsp;IF&nbsp;FOUND&nbsp;USING&nbsp;&lt;lv_return&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.                    " GET_WFN_DATA<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_FOR_BANK_DELETION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;if&nbsp;the&nbsp;secondary&nbsp;bank&nbsp;has&nbsp;been&nbsp;deleted&nbsp;(delimited)<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_for_bank_deletion .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_old_subty&nbsp;TYPE&nbsp;subty,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_new_subty&nbsp;TYPE&nbsp;subty,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_old_endda&nbsp;TYPE&nbsp;endda,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_new_endda&nbsp;TYPE&nbsp;endda,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_eff_date&nbsp;&nbsp;TYPE&nbsp;d,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_delete&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_old_p0009&nbsp;INTO&nbsp;gs_old_p0009&nbsp;WHERE&nbsp;subty&nbsp;EQ&nbsp;'1'.&nbsp;"Second&nbsp;bank<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_old_p0009-subty&nbsp;TO&nbsp;lv_old_subty.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_old_p0009-endda&nbsp;TO&nbsp;lv_old_endda.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_new_p0009&nbsp;INTO&nbsp;gs_new_p0009&nbsp;WHERE&nbsp;subty&nbsp;EQ&nbsp;'1'.&nbsp;"Second&nbsp;bank<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0009-subty&nbsp;TO&nbsp;lv_new_subty.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0009-endda&nbsp;TO&nbsp;lv_new_endda.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;lv_old_subty&nbsp;EQ&nbsp;'1'&nbsp;AND&nbsp;lv_new_subty&nbsp;EQ&nbsp;'1'&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_new_endda&nbsp;LT&nbsp;lv_old_endda&nbsp;AND&nbsp;lv_new_endda&nbsp;GE&nbsp;gv_frbeg&nbsp;AND&nbsp;lv_new_endda&nbsp;LT&nbsp;gv_frend&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_delete&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_eff_date&nbsp;=&nbsp;lv_new_endda&nbsp;+&nbsp;1.&nbsp;"Effective&nbsp;date&nbsp;of&nbsp;delimitation<br />
+&nbsp;&nbsp;ELSEIF&nbsp;(&nbsp;lv_old_subty&nbsp;EQ&nbsp;'1'&nbsp;AND&nbsp;lv_new_subty&nbsp;NE&nbsp;'1'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_delete&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_eff_date&nbsp;=&nbsp;gv_frbeg.&nbsp;"Effective&nbsp;date&nbsp;of&nbsp;delimitation<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;lv_delete&nbsp;EQ&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;lv_eff_date&nbsp;TO&nbsp;gs_bank-effective_date_s.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'~'&nbsp;TO&nbsp;:&nbsp;gs_bank-secondary_bank,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_bank-secondary_branch,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_bank-second_accnt_no,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_bank-second_dep_amnt.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_FOR_BANK_DELETION<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_FOR_CHANGES<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;for&nbsp;changes<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_for_changes .<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_for_new_action.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_for_field_changes.<br />
+<br />
+ENDFORM.                    " CHECK_FOR_CHANGES<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_FOR_NEW_ACTION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;if&nbsp;there&nbsp;are&nbsp;any&nbsp;new&nbsp;personnel&nbsp;actions<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_for_new_action .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_old_p0000-begda&nbsp;NE&nbsp;gs_new_p0000-begda.&nbsp;"New&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0000-begda&nbsp;TO&nbsp;gv_effective_date.&nbsp;"Store&nbsp;the&nbsp;effective&nbsp;date&nbsp;of&nbsp;the&nbsp;new&nbsp;action<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7F'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_effective_date&nbsp;=&nbsp;gv_effective_date&nbsp;-&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7G'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7F'&nbsp;OR&nbsp;'7H'&nbsp;OR&nbsp;'7R'.&nbsp;&nbsp;"Termination<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;gs_export_flags-ed_export.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'X'&nbsp;TO&nbsp;gs_change_blocks-cb_27.&nbsp;&nbsp;"Time&nbsp;block<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;"Hire<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'X'&nbsp;TO&nbsp;gs_change_blocks-cb_29.&nbsp;"Time&nbsp;off&nbsp;policy&nbsp;block<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7I'&nbsp;OR&nbsp;'7K'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Leave&nbsp;of&nbsp;Absence<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7J'&nbsp;OR&nbsp;'7N'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Return&nbsp;from&nbsp;Leave&nbsp;of&nbsp;Absence<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7D'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Pay&nbsp;Rate&nbsp;Change<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;gs_export_flags-ed_export.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7C'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'&nbsp;OR&nbsp;'04'&nbsp;OR&nbsp;'05'.&nbsp;&nbsp;&nbsp;&nbsp;"Pay&nbsp;Rate&nbsp;Change<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;gs_export_flags-ed_export.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;gs_export_flags-ed_export.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_FOR_NEW_ACTION<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_FOR_FIELD_CHANGES<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;if&nbsp;any&nbsp;field&nbsp;value&nbsp;has&nbsp;changed.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_for_field_changes .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_sname&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;30.&nbsp;"Subroutine&nbsp;name<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_old&gt;,&nbsp;&lt;lv_new&gt;.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;go_structdescr_ed-&gt;components&nbsp;INTO&nbsp;gs_component.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;gs_component-name&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_old_employee_data&nbsp;TO&nbsp;&lt;lv_old&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;gs_component-name&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_new_employee_data&nbsp;TO&nbsp;&lt;lv_new&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;lv_new&gt;&nbsp;NE&nbsp;&lt;lv_old&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;gs_export_flags-ed_export.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;gs_component-name&nbsp;'_EFF_DATE'&nbsp;INTO&nbsp;lv_sname.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;the&nbsp;effective&nbsp;date,&nbsp;if&nbsp;we&nbsp;don't&nbsp;have&nbsp;one&nbsp;yet<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_effective_date&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;(lv_sname)&nbsp;IN&nbsp;PROGRAM&nbsp;zhro_adp_wfn_ca&nbsp;IF&nbsp;FOUND&nbsp;CHANGING&nbsp;gv_effective_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONCATENATE&nbsp;gs_component-name&nbsp;'_CB'&nbsp;INTO&nbsp;lv_sname.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set&nbsp;the&nbsp;change&nbsp;block&nbsp;for&nbsp;export<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;(lv_sname)&nbsp;IN&nbsp;PROGRAM&nbsp;zhro_adp_wfn_ca&nbsp;IF&nbsp;FOUND.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.                    " CHECK_FOR_FIELD_CHANGES<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_COMP_CHANGE_DATE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;Date&nbsp;of&nbsp;Compensation&nbsp;Change<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_COMP_CHANGE_DATE&nbsp;&nbsp;Date&nbsp;of&nbsp;Compensation&nbsp;Change<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_comp_change_date  CHANGING fv_comp_change_date.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_date&nbsp;TYPE&nbsp;d.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;fv_comp_change_date.<br />
+<br />
+&nbsp;&nbsp;CHECK&nbsp;gs_old_p0008&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;OR&nbsp;gs_old_p0001&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Pay&nbsp;Rate&nbsp;Change&nbsp;without&nbsp;SAP&nbsp;action<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0008-bet01&nbsp;NE&nbsp;gs_new_p0008-bet01.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0008-begda&nbsp;TO&nbsp;lv_date.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Hours&nbsp;Change&nbsp;without&nbsp;SAP&nbsp;action<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_p0008-divgv&nbsp;NE&nbsp;gs_new_p0008-divgv.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0008-begda&nbsp;GT&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0008-begda&nbsp;TO&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Rate&nbsp;Type&nbsp;Change&nbsp;without&nbsp;SAP&nbsp;action<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-rate_type&nbsp;NE&nbsp;gs_new_employee_data-rate_type.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0001-begda&nbsp;GT&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0001-begda&nbsp;TO&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;MOVE&nbsp;lv_date&nbsp;TO&nbsp;fv_comp_change_date.<br />
+<br />
+ENDFORM.                    " GET_COMP_CHANGE_DATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_TRANSFERS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;transfer&nbsp;relevant&nbsp;data.<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_SAME_TAX_FORM&nbsp;&nbsp;Same&nbsp;Tax&nbsp;Form<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_TRANSFER_DATE&nbsp;&nbsp;Transfer&nbsp;Date<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_transfers  CHANGING fv_same_tax_form<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_transfer_date.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_date&nbsp;TYPE&nbsp;d.<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;fv_same_tax_form,&nbsp;&nbsp;fv_transfer_date.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;CRA&nbsp;number&nbsp;change&nbsp;within&nbsp;same&nbsp;company&nbsp;-&nbsp;with/without&nbsp;SAP&nbsp;action<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-cra_pa_rq_id&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-cra_pa_rq_id&nbsp;NE&nbsp;gs_new_employee_data-cra_pa_rq_id.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0033-begda&nbsp;TO&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_same_tax_form.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Pay&nbsp;Group&nbsp;change&nbsp;within&nbsp;same&nbsp;company&nbsp;-&nbsp;with/without&nbsp;SAP&nbsp;action<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-pay_group&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-pay_group&nbsp;NE&nbsp;gs_new_employee_data-pay_group.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-rate_amount&nbsp;NE&nbsp;gs_old_employee_data-rate_amount.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_same_tax_form.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'Y'&nbsp;TO&nbsp;fv_same_tax_form.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0001-begda&nbsp;GT&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0001-begda&nbsp;TO&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Province&nbsp;of&nbsp;Employment&nbsp;change&nbsp;without&nbsp;SAP&nbsp;action<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-prov_of_emplymnt&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_old_employee_data-prov_of_emplymnt&nbsp;&nbsp;NE&nbsp;gs_new_employee_data-prov_of_emplymnt.&nbsp;"Change&nbsp;in&nbsp;Province&nbsp;of&nbsp;Employment<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0461-begda&nbsp;GT&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;gs_new_p0461-begda&nbsp;TO&nbsp;lv_date.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'N'&nbsp;TO&nbsp;fv_same_tax_form.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;MOVE&nbsp;lv_date&nbsp;TO&nbsp;fv_transfer_date.<br />
+<br />
+ENDFORM.                    " GET_TRANSFERS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;FILL_WFN_RECORDS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fill&nbsp;the&nbsp;WFN&nbsp;records&nbsp;with&nbsp;employee&nbsp;and&nbsp;time&nbsp;data<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM fill_wfn_records .<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;DATA:&nbsp;lv_num&nbsp;TYPE&nbsp;i.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ASSIGN&nbsp;gs_employee_data&nbsp;TO&nbsp;&lt;gs_employee_data&gt;.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PERFORM&nbsp;get_num_time_off_records&nbsp;CHANGING&nbsp;lv_num.<br />
+<br />
+*&nbsp;&nbsp;IF&nbsp;lv_num&nbsp;EQ&nbsp;0.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;gs_change_blocks-cb_29.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;=&nbsp;1.<br />
+*&nbsp;&nbsp;ENDIF.<br />
+<br />
+*&nbsp;&nbsp;DO&nbsp;lv_num&nbsp;TIMES.&nbsp;&nbsp;"Looping&nbsp;3&nbsp;times&nbsp;to&nbsp;include&nbsp;the&nbsp;time&nbsp;records&nbsp;(by&nbsp;requirements)<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CLEAR:&nbsp;gs_employee_data,&nbsp;gs_line_out.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;gv_time_iteration&nbsp;=&nbsp;gv_time_iteration&nbsp;+&nbsp;1.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;gv_time_iteration&nbsp;EQ&nbsp;1&nbsp;)&nbsp;OR&nbsp;(&nbsp;gv_time_iteration&nbsp;GT&nbsp;1&nbsp;AND&nbsp;gs_change_blocks-cb_29&nbsp;EQ&nbsp;'X'&nbsp;).<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_export_flags-ed_export&nbsp;EQ&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;get_wfn_data&nbsp;USING&nbsp;gc_all.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_employee_data&nbsp;TO&nbsp;gt_employee_data.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;convert_to_csv&nbsp;CHANGING&nbsp;gs_line_out.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;append_to_file_section.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_out.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;gv_number_of_records&nbsp;=&nbsp;gv_number_of_records&nbsp;+&nbsp;1.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gv_time_iteration&nbsp;EQ&nbsp;1.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;gv_num_exported_pernr&nbsp;=&nbsp;gv_num_exported_pernr&nbsp;+&nbsp;1.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+*&nbsp;&nbsp;ENDDO.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.                    " FILL_WFN_RECORDS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;WRITE_TO_FILE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;records&nbsp;to&nbsp;the&nbsp;file<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM write_to_file .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_lines&nbsp;TYPE&nbsp;i.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;LINES&nbsp;OF&nbsp;:&nbsp;gt_file_1&nbsp;TO&nbsp;gt_file_out,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_file_2&nbsp;TO&nbsp;gt_file_out,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_file_3&nbsp;TO&nbsp;gt_file_out,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_file_4&nbsp;TO&nbsp;gt_file_out,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_file_5&nbsp;TO&nbsp;gt_file_out.<br />
+<br />
+&nbsp;&nbsp;DESCRIBE&nbsp;TABLE&nbsp;gt_file_out&nbsp;LINES&nbsp;lv_lines.<br />
+&nbsp;&nbsp;CHECK&nbsp;lv_lines&nbsp;GT&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;p_pc&nbsp;EQ&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;create_file_on_pc&nbsp;USING&nbsp;p_pfile&nbsp;gt_file_out.<br />
+&nbsp;&nbsp;ELSEIF&nbsp;p_srv&nbsp;EQ&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;create_file_on_srv&nbsp;USING&nbsp;p_sfile&nbsp;p_backup&nbsp;gt_file_out.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " WRITE_TO_FILE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;VALIDATE_EMPLOYEE<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee&nbsp;Validation<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM validate_employee .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gt_new_p0000[]&nbsp;IS&nbsp;INITIAL.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;skip&nbsp;employees&nbsp;that&nbsp;have&nbsp;new&nbsp;hires&nbsp;in&nbsp;the&nbsp;future.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;SUBTRACT&nbsp;1&nbsp;FROM&nbsp;gv_num_selected_pernr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;REJECT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_data_to_validate.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_for_actions_to_skip.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e013.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_termination.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e001.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e003.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e004.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e005_e006.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e007_e008.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e009.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e010_e011.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_e012.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w001.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PERFORM&nbsp;check_error_w002.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w003.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w004.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w005.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w006.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w007.<br />
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w008.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;PERFORM&nbsp;check_error_w009.<br />
+*&nbsp;&nbsp;PERFORM&nbsp;check_error_w010.<br />
+*&nbsp;&nbsp;PERFORM&nbsp;check_error_w011.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;check_error_w012.<br />
+&nbsp;&nbsp;PERFORM&nbsp;clear_globals.<br />
+<br />
+ENDFORM.                    " VALIDATE_EMPLOYEE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_NUM_TIME_OFF_RECORDS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;the&nbsp;number&nbsp;of&nbsp;time&nbsp;off&nbsp;records&nbsp;from&nbsp;infotype&nbsp;33<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_num_time_off_records  CHANGING fv_num.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0033-aus04&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fv_num&nbsp;=&nbsp;fv_num&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0033-aus05&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fv_num&nbsp;=&nbsp;fv_num&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0033-aus06&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;fv_num&nbsp;=&nbsp;fv_num&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " GET_NUM_TIME_OFF_RECORDS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;ACTION_BASED_VALIDATION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This&nbsp;is&nbsp;to&nbsp;add&nbsp;any&nbsp;extra&nbsp;logic&nbsp;that&nbsp;is&nbsp;based&nbsp;on&nbsp;Actions.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;example,&nbsp;only&nbsp;send&nbsp;addresses&nbsp;and&nbsp;bank&nbsp;details&nbsp;on&nbsp;Hires<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;Re-Hires.<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM action_based_validation .<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Don't&nbsp;send&nbsp;address&nbsp;for&nbsp;all&nbsp;actions&nbsp;except&nbsp;Hire/Rehire<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn&nbsp;NE&nbsp;'7A'&nbsp;AND&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn&nbsp;NE&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR:&nbsp;&nbsp;gs_change_blocks-cb_14.&nbsp;"Addresses<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_16,&nbsp;"Primary&nbsp;Bank&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[&nbsp;When&nbsp;ESS&nbsp;is&nbsp;enabled&nbsp;for&nbsp;bank&nbsp;details&nbsp;]]<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_change_blocks-cb_17.&nbsp;"Secondary&nbsp;Bank&nbsp;&nbsp;&nbsp;&nbsp;[[&nbsp;these&nbsp;can&nbsp;be&nbsp;added.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]]<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'X'&nbsp;TO&nbsp;:&nbsp;gs_change_blocks-cb_20,&nbsp;gs_change_blocks-cb_21.&nbsp;&nbsp;&nbsp;"Send&nbsp;Fed/Prov&nbsp;Tax&nbsp;Credit&nbsp;Type&nbsp;on&nbsp;Hire/Re-hire<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " ACTION_BASED_VALIDATION<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;DATA_COLLECTION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data&nbsp;Collectin&nbsp;Routine<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM data_collection .<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;init_globals.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_old_data.<br />
+&nbsp;&nbsp;IF&nbsp;p_cp&nbsp;EQ&nbsp;'X'.&nbsp;"Current&nbsp;period&nbsp;for&nbsp;all&nbsp;payroll&nbsp;areas<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;get_current_period&nbsp;CHANGING&nbsp;gv_frper&nbsp;gv_frbeg&nbsp;gv_frend.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;PERFORM&nbsp;get_new_data.<br />
+<br />
+ENDFORM.                    " DATA_COLLECTION<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E001<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e001 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0002-perid&nbsp;EQ&nbsp;'000000000'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E001'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E001<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E003<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e003 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0185-icnum&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E003'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E003<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E004<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e004 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0001-pernr&nbsp;IS&nbsp;INITIAL&nbsp;AND&nbsp;gs_new_p0032-pnalt&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E004'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E004<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E005_E006<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e005_e006 .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_pernr&nbsp;TYPE&nbsp;pernr_d,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_begda&nbsp;TYPE&nbsp;begda,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_endda&nbsp;TYPE&nbsp;endda.<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lt_0185&nbsp;TYPE&nbsp;STANDARD&nbsp;TABLE&nbsp;OF&nbsp;p0185,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_0185&nbsp;TYPE&nbsp;p0185.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0001-yysupervisor_id&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E005'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;lv_pernr&nbsp;=&nbsp;gs_new_p0001-yysupervisor_id.<br />
+&nbsp;&nbsp;lv_begda&nbsp;=&nbsp;gs_new_p0001-begda.<br />
+&nbsp;&nbsp;lv_endda&nbsp;=&nbsp;gs_new_p0001-endda.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Get&nbsp;the&nbsp;WFN&nbsp;ID&nbsp;of&nbsp;the&nbsp;Supervisor<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'HR_READ_INFOTYPE'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pernr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_pernr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'0185'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_begda<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endda&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lv_endda<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TABLES<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infty_tab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;lt_0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXCEPTIONS<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infty_not_found&nbsp;=&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OTHERS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;2.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;EQ&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SORT&nbsp;lt_0185&nbsp;DESCENDING&nbsp;BY&nbsp;endda.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;lt_0185&nbsp;INTO&nbsp;ls_0185<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;ictyp&nbsp;EQ&nbsp;'Z3'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;NE&nbsp;0&nbsp;OR&nbsp;ls_0185-icnum&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E006'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E005_E006<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E007_E008<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e007_e008 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0008-divgv&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E007'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0008-bet01&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E008'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E007_E008<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E009<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e009 .<br />
+<br />
+&nbsp;&nbsp;CHECK&nbsp;gs_new_p0000-begda&nbsp;NE&nbsp;gs_old_p0000-begda.&nbsp;"New&nbsp;action<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;'7D'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Pay&nbsp;Rate&nbsp;Change<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_old_p0008-bet01&nbsp;EQ&nbsp;gs_new_p0008-bet01.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E009'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7C'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'&nbsp;OR&nbsp;'04'&nbsp;OR&nbsp;'05'.&nbsp;&nbsp;&nbsp;&nbsp;"Pay&nbsp;Rate&nbsp;Change<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_old_p0008-bet01&nbsp;EQ&nbsp;gs_new_p0008-bet01.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E009'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E009<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E010_E011<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e010_e011 .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_darnn&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'DARNN',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_datnn&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'DATNN',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_date_07&nbsp;&nbsp;TYPE&nbsp;dardt,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Last&nbsp;Day&nbsp;Worked<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_date_08&nbsp;&nbsp;TYPE&nbsp;dardt.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Last&nbsp;Day&nbsp;Paid<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_darnn&gt;&nbsp;TYPE&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_datnn&gt;&nbsp;TYPE&nbsp;data.<br />
+<br />
+<br />
+&nbsp;&nbsp;DO&nbsp;12&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;=&nbsp;lv_num&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_darnn+3(2)&nbsp;=&nbsp;lv_num.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_datnn+3(2)&nbsp;=&nbsp;lv_num.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_darnn&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_new_p0041&nbsp;TO&nbsp;&lt;lv_darnn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_datnn&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_new_p0041&nbsp;TO&nbsp;&lt;lv_datnn&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_darnn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'07'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;lv_date_07.&nbsp;&nbsp;&nbsp;"Last&nbsp;Day&nbsp;Worked<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'08'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;lv_date_08.&nbsp;&nbsp;&nbsp;"Last&nbsp;Day&nbsp;Paid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;'7F'&nbsp;OR&nbsp;'7H'&nbsp;OR&nbsp;'7R'.&nbsp;&nbsp;"Termination<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;lv_date_08&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E010'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;lv_date_07&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E011'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E010_E011<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E012<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e012 .<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;gs_new_p0001-bukrs.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;&nbsp;'CA10'&nbsp;OR&nbsp;'CA70'.&nbsp;&nbsp;&nbsp;"T56B<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0033-aus01&nbsp;EQ&nbsp;'0'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E012'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E012<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_E013<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_e013 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn(1)&nbsp;NE&nbsp;'7'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'E013'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-massn<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_E013<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W001<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w001 .<br />
+<br />
+&nbsp;&nbsp;DATA:&nbsp;lv_darnn&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'DARNN',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_datnn&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;5&nbsp;VALUE&nbsp;'DATNN',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_date_06&nbsp;&nbsp;TYPE&nbsp;dardt.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Adjusted&nbsp;Service&nbsp;Date<br />
+<br />
+&nbsp;&nbsp;FIELD-SYMBOLS:&nbsp;&lt;lv_darnn&gt;&nbsp;TYPE&nbsp;data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;lv_datnn&gt;&nbsp;TYPE&nbsp;data.<br />
+<br />
+&nbsp;&nbsp;DO&nbsp;12&nbsp;TIMES.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_num&nbsp;=&nbsp;lv_num&nbsp;+&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_darnn+3(2)&nbsp;=&nbsp;lv_num.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_datnn+3(2)&nbsp;=&nbsp;lv_num.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_darnn&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_new_p0041&nbsp;TO&nbsp;&lt;lv_darnn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_datnn&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_new_p0041&nbsp;TO&nbsp;&lt;lv_datnn&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;&lt;lv_darnn&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'06'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;&lt;lv_datnn&gt;&nbsp;TO&nbsp;lv_date_06.&nbsp;&nbsp;&nbsp;"Adjusted&nbsp;Service&nbsp;Date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;lv_date_06&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W001'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W001<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W002<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w002 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0002-famst&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W002'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W002<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_DATA_TO_VALIDATE<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_data_to_validate .<br />
+<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0000&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0000&nbsp;INTO&nbsp;gs_new_p0000&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0000&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0000&nbsp;INTO&nbsp;gs_old_p0000&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0001&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0001&nbsp;INTO&nbsp;gs_new_p0001&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0002&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0002&nbsp;INTO&nbsp;gs_new_p0002&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_old_p0008&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_old_p0008&nbsp;INTO&nbsp;gs_old_p0008&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0008&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0008&nbsp;INTO&nbsp;gs_new_p0008&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0032&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0032&nbsp;INTO&nbsp;gs_new_p0032&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0033&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0033&nbsp;INTO&nbsp;gs_new_p0033&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0041&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0041&nbsp;INTO&nbsp;gs_new_p0041&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0105&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0105&nbsp;INTO&nbsp;gs_new_p0105&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0185&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0185&nbsp;INTO&nbsp;gs_new_p0185&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0461&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0461&nbsp;INTO&nbsp;gs_new_p0461&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0462&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0462&nbsp;INTO&nbsp;gs_new_p0462&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0463&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0463&nbsp;INTO&nbsp;gs_new_p0463&nbsp;INDEX&nbsp;1.<br />
+<br />
+&nbsp;&nbsp;SORT&nbsp;gt_new_p0464&nbsp;BY&nbsp;endda&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_new_p0464&nbsp;INTO&nbsp;gs_new_p0464&nbsp;INDEX&nbsp;1.<br />
+<br />
+ENDFORM.                    " GET_DATA_TO_VALIDATE<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CLEAR_GLOBALS<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM clear_globals .<br />
+<br />
+&nbsp;&nbsp;CLEAR:&nbsp;gs_new_p0000,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0000,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0001,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0002,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_old_p0008,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0008,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0032,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0033,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0041,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0105,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0185,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0461,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0462,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0463,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0464.<br />
+ENDFORM.                    " CLEAR_GLOBALS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W003<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w003 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0002-sprsl&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W003'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W003<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W004<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w004 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0002-gesch&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W004'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W004<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W005<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w005 .<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gt_new_p0006[]&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W005'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W005<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W006<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w006 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0105-usrid_long&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W006'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W006<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W007<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w007 .<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;gs_new_p0000-massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7A'&nbsp;OR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"New&nbsp;Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'7G'.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gt_new_p0009[]&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W007'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W007<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W008<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w008 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0461&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W008'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W008<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W009<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w009 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0462&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W009'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W009<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W010<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w010 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0463&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W010'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W010<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W011<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w011 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0464&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W011'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W011<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_ERROR_W012<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_error_w012 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0033&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'W012'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;space.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_ERROR_W012<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_TERMINATION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;if&nbsp;termination&nbsp;already&nbsp;sent<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_termination .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_old_p0000-massn&nbsp;EQ&nbsp;'7F'&nbsp;AND&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7F'&nbsp;)&nbsp;OR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;gs_old_p0000-massn&nbsp;EQ&nbsp;'7H'&nbsp;AND&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7H'&nbsp;)&nbsp;OR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;gs_old_p0000-massn&nbsp;EQ&nbsp;'7R'&nbsp;AND&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7R'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SUBTRACT&nbsp;1&nbsp;FROM&nbsp;gv_num_selected_pernr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;REJECT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;Old&nbsp;employee&nbsp;terminated&nbsp;before&nbsp;Ev5&nbsp;was&nbsp;implemented.&nbsp;&nbsp;Do&nbsp;not&nbsp;send.<br />
+*&nbsp;Change&nbsp;table&nbsp;will&nbsp;be&nbsp;empty&nbsp;and&nbsp;existing&nbsp;IT0&nbsp;record&nbsp;will&nbsp;be&nbsp;7F.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;gt_old_p0000[]&nbsp;IS&nbsp;INITIAL&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7F'&nbsp;OR&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7H'&nbsp;OR&nbsp;gs_new_p0000-massn&nbsp;EQ&nbsp;'7R'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SUBTRACT&nbsp;1&nbsp;FROM&nbsp;gv_num_selected_pernr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;REJECT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.                    " CHECK_TERMINATION<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;CHECK_FOR_ACTIONS_TO_SKIP<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_for_actions_to_skip .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_new_p0000-massn(1)&nbsp;EQ&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SUBTRACT&nbsp;1&nbsp;FROM&nbsp;gv_num_selected_pernr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;REJECT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " CHECK_FOR_ACTIONS_TO_SKIP<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;APPEND_TO_FILE_SECTION<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Append&nbsp;line&nbsp;to&nbsp;the&nbsp;corresponding&nbsp;section&nbsp;of&nbsp;the<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&nbsp;&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM append_to_file_section .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gs_old_p0001-yymanager_flag&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;AND&nbsp;gs_new_p0001-yymanager_flag&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_old_p0001-yymanager_flag&nbsp;NE&nbsp;gs_new_p0001-yymanager_flag&nbsp;)&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-stat2&nbsp;EQ&nbsp;3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0001-yymanager_flag&nbsp;EQ&nbsp;'Y'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;gs_old_p0001-yymanager_flag&nbsp;EQ&nbsp;'Y'&nbsp;AND&nbsp;gs_new_p0001-yymanager_flag&nbsp;EQ&nbsp;'N'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;(&nbsp;gs_old_p0000-stat2&nbsp;NE&nbsp;gs_new_p0000-stat2&nbsp;)&nbsp;AND<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_new_p0000-stat2&nbsp;NE&nbsp;3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0001-yymanager_flag&nbsp;EQ&nbsp;'N'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_4.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;gs_new_p0001-yymanager_flag&nbsp;EQ&nbsp;'Y'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_5.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_new_p0001-yymanager_flag&nbsp;EQ&nbsp;'Y'.&nbsp;&nbsp;"New&nbsp;manager&nbsp;hire.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_line_out&nbsp;TO&nbsp;gt_file_2.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " APPEND_TO_FILE_SECTION<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>

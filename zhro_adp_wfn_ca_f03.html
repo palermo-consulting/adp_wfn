@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>ZHRO_ADP_WFN_CA_F03</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRO_ADP_WFN_CA_F03</h2>
+<h3> Description: WFN Interface - Effective Dates and Change Blocks</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRO_ADP_WFN_CA_F03<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+*--------------------------------------------------------------------------------------------------<br />
+*&nbsp;This&nbsp;block&nbsp;of&nbsp;subroutines&nbsp;maps&nbsp;the&nbsp;SAP&nbsp;effective&nbsp;date&nbsp;to&nbsp;the&nbsp;WFN&nbsp;field.&nbsp;&nbsp;These&nbsp;are&nbsp;called&nbsp;by&nbsp;the<br />
+*&nbsp;change&nbsp;validation&nbsp;logic.<br />
+*--------------------------------------------------------------------------------------------------<br />
+<br />
+   </div>
+   <div class="code">
+FORM position_id_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0185-begda. ENDFORM.<br />
+FORM co_code_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM seniority_date_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0041-begda. ENDFORM.<br />
+FORM credited_service_date_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0041-begda. ENDFORM.<br />
+FORM adjusted_service_date_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0041-begda. ENDFORM.<br />
+FORM employee_status_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0000-begda. ENDFORM.<br />
+FORM home_cost_number_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM home_department_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM location_code_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM pay_group_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM last_name_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM first_name_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM actual_mar_sta_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM tax_id_number_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM tax_id_expy_date_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0041-begda. ENDFORM.<br />
+FORM birth_date_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM corresp_lang_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM gender_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0002-begda. ENDFORM.<br />
+FORM address_line_1_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0006-begda. ENDFORM.<br />
+FORM address_line_2_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0006-begda. ENDFORM.<br />
+FORM address_1_prov_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0006-begda. ENDFORM.<br />
+FORM address_1_city_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0006-begda. ENDFORM.<br />
+FORM address_1_pstlcd_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0006-begda. ENDFORM.<br />
+FORM address_1_cntry_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0006-begda. ENDFORM.<br />
+FORM standard_hours_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0008-begda. ENDFORM.<br />
+FORM rate_type_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM rate_amount_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0008-begda. ENDFORM.<br />
+FORM payment_method_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_p. ENDFORM.<br />
+FORM primary_bank_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_p. ENDFORM.<br />
+FORM primary_branch_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_p. ENDFORM.<br />
+FORM primary_accnt_no_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_p. ENDFORM.<br />
+FORM secondary_bank_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_s. ENDFORM.<br />
+FORM secondary_branch_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_s. ENDFORM.<br />
+FORM second_accnt_no_eff_date CHANGING fv_effective_date.fv_effective_date = gs_bank-effective_date_s. ENDFORM.<br />
+FORM second_dep_amnt_eff_date CHANGING fv_effective_date. fv_effective_date = gs_bank-effective_date_s. ENDFORM.<br />
+FORM prov_of_emplymnt_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0461-begda. ENDFORM.<br />
+FORM cra_pa_rq_id_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0033-begda. ENDFORM.<br />
+FORM fedtax_crdt_type_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0463-begda. ENDFORM.<br />
+FORM fedtax_crdt_oamt_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0463-begda. ENDFORM.<br />
+FORM prvtax_crdt_type_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0462-begda. ENDFORM.<br />
+FORM prvtax_crdt_oamt_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0462-begda. ENDFORM.<br />
+FORM dont_calc_fedtax_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0464-begda. ENDFORM.<br />
+FORM dont_calc_c_qpp_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0464-begda. ENDFORM.<br />
+FORM do_not_calc_ei_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0464-begda. ENDFORM.<br />
+FORM employee_occup_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM last_day_paid_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0041-begda. ENDFORM.<br />
+FORM payclass_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0033-begda. ENDFORM.<br />
+FORM supervisorflag_eff_date CHANGING fv_effective_date. fv_effective_date = sy-datum. ENDFORM.<br />
+FORM reports_to_id_eff_date CHANGING fv_effective_date. fv_effective_date = sy-datum. ENDFORM.<br />
+FORM timezone_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0462-begda. ENDFORM.<br />
+FORM xfertopayroll_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+FORM to_policy_name_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0033-begda. ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*FORM&nbsp;to_plcyass_begda_eff_date&nbsp;CHANGING&nbsp;fv_effective_date.&nbsp;fv_effective_date&nbsp;=&nbsp;gs_new_p0033-begda.&nbsp;ENDFORM.<br />
+   </div>
+   <div class="code">
+FORM work_email_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0105-begda. ENDFORM.<br />
+FORM union_code_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0008-begda. ENDFORM.<br />
+FORM worker_category_eff_date CHANGING fv_effective_date. fv_effective_date = gs_new_p0001-begda. ENDFORM.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------------------------------------<br />
+*&nbsp;This&nbsp;block&nbsp;of&nbsp;subroutines&nbsp;maps&nbsp;a&nbsp;WFN&nbsp;field&nbsp;to&nbsp;a&nbsp;change&nbsp;block&nbsp;that&nbsp;tells&nbsp;the&nbsp;interface&nbsp;if&nbsp;the<br />
+*&nbsp;field&nbsp;should&nbsp;be&nbsp;exported.&nbsp;&nbsp;These&nbsp;are&nbsp;called&nbsp;by&nbsp;the&nbsp;change&nbsp;validation&nbsp;logic.&nbsp;&nbsp;They&nbsp;are&nbsp;left<br />
+*&nbsp;purposely&nbsp;unformatted&nbsp;for&nbsp;ease&nbsp;of&nbsp;search.<br />
+*--------------------------------------------------------------------------------------------------<br />
+<br />
+   </div>
+   <div class="code">
+FORM position_id_cb. gs_change_blocks-cb_1  = 'X'. ENDFORM.<br />
+FORM co_code_cb. gs_change_blocks-cb_2  = 'X'. ENDFORM.<br />
+FORM seniority_date_cb. gs_change_blocks-cb_3  = 'X'. ENDFORM.<br />
+FORM credited_service_date_cb. gs_change_blocks-cb_3  = 'X'. ENDFORM.<br />
+FORM adjusted_service_date_cb. gs_change_blocks-cb_3  = 'X'. ENDFORM.<br />
+FORM employee_status_cb. gs_change_blocks-cb_4  = 'X'. ENDFORM.<br />
+FORM home_cost_number_cb. gs_change_blocks-cb_5  = 'X'. ENDFORM.<br />
+FORM home_department_cb. gs_change_blocks-cb_6  = 'X'. ENDFORM.<br />
+FORM location_code_cb. gs_change_blocks-cb_30  = 'X'. ENDFORM.<br />
+FORM pay_group_cb. gs_change_blocks-cb_7  = 'X'. ENDFORM.<br />
+FORM last_name_cb. gs_change_blocks-cb_8  = 'X'. ENDFORM.<br />
+FORM first_name_cb. gs_change_blocks-cb_8  = 'X'. ENDFORM.<br />
+FORM actual_mar_sta_cb. gs_change_blocks-cb_9  = 'X'. ENDFORM.<br />
+FORM tax_id_number_cb. gs_change_blocks-cb_10  = 'X'. ENDFORM.<br />
+FORM tax_id_expy_date_cb. gs_change_blocks-cb_10  = 'X'. ENDFORM.<br />
+FORM birth_date_cb. gs_change_blocks-cb_11  = 'X'. ENDFORM.<br />
+FORM corresp_lang_cb. gs_change_blocks-cb_12  = 'X'. ENDFORM.<br />
+FORM gender_cb. gs_change_blocks-cb_13  = 'X'. ENDFORM.<br />
+FORM address_line_1_cb. gs_change_blocks-cb_14  = 'X'. ENDFORM.<br />
+FORM address_line_2_cb. gs_change_blocks-cb_14  = 'X'. ENDFORM.<br />
+FORM address_1_prov_cb. gs_change_blocks-cb_14  = 'X'. ENDFORM.<br />
+FORM address_1_city_cb. gs_change_blocks-cb_14  = 'X'. ENDFORM.<br />
+FORM address_1_pstlcd_cb. gs_change_blocks-cb_14  = 'X'. ENDFORM.<br />
+FORM address_1_cntry_cb. gs_change_blocks-cb_14  = 'X'. ENDFORM.<br />
+FORM standard_hours_cb. gs_change_blocks-cb_15  = 'X'. ENDFORM.<br />
+FORM rate_type_cb. gs_change_blocks-cb_15  = 'X'. ENDFORM.<br />
+FORM rate_amount_cb. gs_change_blocks-cb_15  = 'X'. ENDFORM.<br />
+FORM payment_method_cb. gs_change_blocks-cb_16  = 'X'. ENDFORM.<br />
+FORM primary_bank_cb. gs_change_blocks-cb_16  = 'X'. ENDFORM.<br />
+FORM primary_branch_cb. gs_change_blocks-cb_16  = 'X'. ENDFORM.<br />
+FORM primary_accnt_no_cb. gs_change_blocks-cb_16  = 'X'. ENDFORM.<br />
+FORM secondary_bank_cb. gs_change_blocks-cb_17  = 'X'. ENDFORM.<br />
+FORM secondary_branch_cb. gs_change_blocks-cb_17  = 'X'. ENDFORM.<br />
+FORM second_accnt_no_cb. gs_change_blocks-cb_17  = 'X'. ENDFORM.<br />
+FORM second_dep_amnt_cb. gs_change_blocks-cb_17  = 'X'. ENDFORM.<br />
+FORM prov_of_emplymnt_cb. gs_change_blocks-cb_18  = 'X'. ENDFORM.<br />
+FORM cra_pa_rq_id_cb. gs_change_blocks-cb_19  = 'X'. ENDFORM.<br />
+FORM fedtax_crdt_type_cb. gs_change_blocks-cb_20  = 'X'. ENDFORM.<br />
+FORM fedtax_crdt_oamt_cb. gs_change_blocks-cb_20  = 'X'. ENDFORM.<br />
+FORM prvtax_crdt_type_cb. gs_change_blocks-cb_21  = 'X'. ENDFORM.<br />
+FORM prvtax_crdt_oamt_cb. gs_change_blocks-cb_21  = 'X'. ENDFORM.<br />
+FORM dont_calc_fedtax_cb. gs_change_blocks-cb_22  = 'X'. ENDFORM.<br />
+FORM dont_calc_c_qpp_cb. gs_change_blocks-cb_23  = 'X'. ENDFORM.<br />
+FORM do_not_calc_ei_cb. gs_change_blocks-cb_24  = 'X'. ENDFORM.<br />
+FORM employee_occup_cb. gs_change_blocks-cb_25  = 'X'. ENDFORM.<br />
+FORM last_day_paid_cb. gs_change_blocks-cb_26  = 'X'. ENDFORM.<br />
+FORM payclass_cb. gs_change_blocks-cb_27  = 'X'. ENDFORM.<br />
+FORM supervisorflag_cb. gs_change_blocks-cb_27  = 'X'. ENDFORM.<br />
+FORM reports_to_id_cb. gs_change_blocks-cb_27  = 'X'. ENDFORM.<br />
+FORM timezone_cb. gs_change_blocks-cb_27  = 'X'. ENDFORM.<br />
+FORM xfertopayroll_cb. gs_change_blocks-cb_27  = 'X'. ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*FORM&nbsp;to_policy_name_cb.&nbsp;gs_change_blocks-cb_29&nbsp;&nbsp;=&nbsp;'X'.&nbsp;ENDFORM.<br />
+*FORM&nbsp;to_plcyass_begda_cb.&nbsp;gs_change_blocks-cb_32&nbsp;&nbsp;=&nbsp;'X'.&nbsp;ENDFORM.<br />
+   </div>
+   <div class="code">
+FORM work_email_cb. gs_change_blocks-cb_28  = 'X'. ENDFORM.<br />
+FORM union_code_cb. gs_change_blocks-cb_31  = 'X'. ENDFORM.<br />
+FORM worker_category_cb. gs_change_blocks-cb_32  = 'X'. ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>

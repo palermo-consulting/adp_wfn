@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=ISO-8859-1" />
+<title>ZHRO_ADP_WFN_CA_F04</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZHRO_ADP_WFN_CA_F04</h2>
+<h3> Description: WFN Interface - Field Mappiing</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZHRO_ADP_WFN_CA_F04<br />
+*&---------------------------------------------------------------------*<br />
+<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;GET_EMPLOYEE_STATUS<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get&nbsp;employee&nbsp;status<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_MASSN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Personnel&nbsp;Action<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_MASSG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Personnel&nbsp;Action&nbsp;Reason<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_RETURN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee&nbsp;Status<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_employee_status  USING    fv_massn fv_massg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;fv_massn.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7A'.&nbsp;&nbsp;"Hire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7B'.&nbsp;&nbsp;"Expat&nbsp;Assignment<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7C'.&nbsp;&nbsp;"Organizational&nbsp;Change<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7D'.&nbsp;&nbsp;"Change&nbsp;of&nbsp;Pay<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7E'.&nbsp;&nbsp;"Transfer/Relocation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7F'.&nbsp;&nbsp;"Termination/Retirement/Deceased<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;fv_massg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'12'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'D'&nbsp;TO&nbsp;fv_return.&nbsp;"Deceased<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'18'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'R'&nbsp;TO&nbsp;fv_return.&nbsp;"Retirement<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T'&nbsp;TO&nbsp;fv_return.&nbsp;"Termination<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7G'.&nbsp;&nbsp;"Rehire<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7H'.&nbsp;&nbsp;"Retirement<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'R'&nbsp;TO&nbsp;fv_return.&nbsp;"Retirement<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7I'.&nbsp;&nbsp;"UnPaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'L'&nbsp;TO&nbsp;fv_return.&nbsp;"LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7J'.&nbsp;&nbsp;"Return&nbsp;to&nbsp;Work&nbsp;from&nbsp;UnPaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7K'.&nbsp;&nbsp;"Hire&nbsp;Unpaid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'L'&nbsp;TO&nbsp;fv_return.&nbsp;"LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7L'.&nbsp;&nbsp;"Hire&nbsp;Paid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'L'&nbsp;TO&nbsp;fv_return.&nbsp;"LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7M'.&nbsp;&nbsp;"Paid&nbsp;LOA&nbsp;–&nbsp;Active&nbsp;Status<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'L'&nbsp;TO&nbsp;fv_return.&nbsp;"LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7N'.&nbsp;&nbsp;"Return&nbsp;to&nbsp;Work&nbsp;from&nbsp;Paid&nbsp;LOA<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7O'.&nbsp;&nbsp;"Country&nbsp;ReAssignment<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7P'.&nbsp;&nbsp;"Severance&nbsp;-&nbsp;Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7Q'.&nbsp;&nbsp;"Return&nbsp;from&nbsp;Expat&nbsp;Assignment<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7R'.&nbsp;&nbsp;"Severance&nbsp;-&nbsp;Withdrawn<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'T'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Terminated<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7T'.&nbsp;&nbsp;"Change&nbsp;of&nbsp;Bank&nbsp;Details<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7U'.&nbsp;&nbsp;"Intercompany&nbsp;Transfer<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7Y'.&nbsp;&nbsp;"Conversion&nbsp;LOA&nbsp;-&nbsp;Canada<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7Z'.&nbsp;&nbsp;"Conversion&nbsp;Hire&nbsp;-&nbsp;Canada<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'A'&nbsp;TO&nbsp;fv_return.&nbsp;&nbsp;"Active<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " GET_EMPLOYEE_STATUS<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;RATE_TYPE_MAPPING<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate&nbsp;Type&nbsp;Mapping<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_ABART&nbsp;&nbsp;&nbsp;Employee&nbsp;Type:&nbsp;1&nbsp;=&nbsp;Hourly,&nbsp;3&nbsp;=&nbsp;Salaried<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_RETURN&nbsp;&nbsp;Rate&nbsp;Type<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM rate_type_mapping  USING    fv_abart<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;1&nbsp;=&nbsp;Hourly,&nbsp;3&nbsp;=&nbsp;Salaried<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;fv_abart&nbsp;EQ&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'H'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ELSEIF&nbsp;gv_abart&nbsp;EQ&nbsp;'3'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'S'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.                    " RATE_TYPE_MAPPING<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;PAY_GROUP_MAPPING<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pay&nbsp;Group&nbsp;Mapping<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_BUKRS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Company&nbsp;code<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_RATE_TYPE&nbsp;&nbsp;H&nbsp;=&nbsp;Hourly,&nbsp;S&nbsp;=&nbsp;Salary<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_RETURN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WFN&nbsp;Pay&nbsp;Group<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM pay_group_mapping  USING    fv_bukrs<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv_rate_type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;fv_bukrs.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'SP04'.&nbsp;&nbsp;"T56A<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;fv_rate_type&nbsp;EQ&nbsp;'S'.&nbsp;"Salary<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'2'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'1'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " PAY_GROUP_MAPPING<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;UNION_CODE_MAPPING<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Union&nbsp;Code&nbsp;Mapping<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;fv_trfar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pay&nbsp;scale&nbsp;type<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_RETURN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Union&nbsp;code<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM union_code_mapping  USING    fv_trfar<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+&nbsp;&nbsp;CASE&nbsp;fv_trfar.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'NU'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'UA'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'U30'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'UB'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'UN'&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'UC'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;&nbsp;&nbsp;&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'UD'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'U20'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'UE'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'847'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'UF'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'847'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " UNION_CODE_MAPPING<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form&nbsp;&nbsp;WORKER_CATEGORY_MAPPING<br />
+*&---------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Worker&nbsp;Category&nbsp;Mapping<br />
+*----------------------------------------------------------------------*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;FV_PERSG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee&nbsp;Group<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--FV_RETURN&nbsp;&nbsp;&nbsp;&nbsp;Worker&nbsp;Category<br />
+*----------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM worker_category_mapping  USING    fv_persg<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;fv_return.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;fv_persg.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'1'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'2'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'P'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'3'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'P'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'4'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'5'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'6'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'7'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'CAS'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'8'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'CAS'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'9'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'CON'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'A'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'OTH'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'B'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'OTH'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'C'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'D'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'OTH'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'F'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'G'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;'F'&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'H'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'I'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVE&nbsp;''&nbsp;TO&nbsp;fv_return.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.                    " WORKER_CATEGORY_MAPPING<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.5.5 - E.G.Mellodew. 1998-2018. Sap Release 731</td>
+   </tr>
+</table>
+</body>
+</html>
